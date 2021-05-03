@@ -24,16 +24,22 @@ public:
 class Entity {
 protected:
 	bool steapble;
+	bool eatable;
 
 public:
-	//void virtual print(std::ostream& os = cout) = 0;
 	virtual Form get_form() = 0;
 
 	bool can_be_step() { return this->steapble; };
 
-	//virtual int get_index_move() const { return -1; };
+	virtual bool is_bot() const = 0;
 
-	//virtual Matrix<int> get_genome() const = 0;
+	virtual bool is_wall() const = 0;
+
+	virtual bool is_health() const = 0;
+
+	virtual bool is_poison() const = 0;
+
+	virtual bool is_empty() const = 0;
 };
 
 class Bot : public Entity {
@@ -47,16 +53,29 @@ public:
 
 	Bot(int move, const Matrix<int>& gen, int ener) : index_move(move), genome(gen), energy(ener) { steapble = false; };
 
-	//void virtual print(std::ostream& os = cout);
-
-	virtual Form get_form() {
-
-		return Form("bot.png");
-	}
+	virtual Form get_form() { return Form("bot.png"); };
 
 	int get_index_move() { return index_move; };
 
+	int get_energy() const { return energy; };
+
 	Matrix<int> get_genome() const { return genome; };
+
+	virtual bool is_bot() const { return true; };
+
+	virtual bool is_wall() const { return false; };
+
+	virtual bool is_health() const { return false; };
+
+	virtual bool is_poison() const { return false; };
+
+	virtual bool is_empty() const { return false; };
+
+	void enlarge_energy(int _energy) { this->energy += _energy; };
+
+	void enlarge_index_move(int add) { this->index_move += add; };
+
+	bool is_die() { return energy < 0 ? true : false; };
 };
 
 class Wall : public Entity {
@@ -65,13 +84,17 @@ private:
 
 public:
 	Wall() { damage = 0; steapble = false; };
-	virtual Form get_form() {
+	virtual Form get_form() { return Form("image.jpg"); }
+    
+	virtual bool is_bot() const { return false; };
 
-		return Form("image.jpg");
-	}
+	virtual bool is_wall() const { return true; };
 
+	virtual bool is_health() const { return false; };
 
-	//virtual Matrix<int> get_genome() const {};
+	virtual bool is_poison() const { return false; };
+
+	virtual bool is_empty() const { return false; };
 
 };
 
@@ -80,20 +103,26 @@ protected:
 	int heal;
 
 public:
-	Nutrition() { heal = 0; steapble = true; };
-	Nutrition(int h) : heal(h) {};
+	Nutrition() { heal = 0; steapble = eatable = true; };
+
+	Nutrition(int h) : heal(h) { steapble = eatable = true; };
+
+	int get_heal() const { return heal; };
+
+	virtual bool is_bot() const { return false; };
+
+	virtual bool is_wall() const { return false; };
+
+	virtual bool is_empty() const { return false; };
 };
 
 class Health : public Nutrition {
 public:
-	virtual Form get_form() {
+	virtual Form get_form() { return Form("image.jpg"); }
 
-		return Form("image.jpg");
-	}
+	virtual bool is_health() const { return true; };
 
-	//virtual int get_index_move() const {};
-
-	//virtual Matrix<int> get_genome() const {};
+	virtual bool is_poison() const { return false; };
 };
 
 class Poison : public Nutrition {
@@ -103,23 +132,26 @@ public:
 		return Form("image.jpg");
 	}
 
-	//virtual int get_index_move() const {};
+	virtual bool is_health() const { return false; };
 
-	//virtual Matrix<int> get_genome() const {};
+	virtual bool is_poison() const { return true; };
 };
 
 class EmptyEntity : public Entity {
 public:
 	EmptyEntity() { steapble = true; };
 
-	virtual Form get_form() {
+	virtual Form get_form() { return Form("image.png"); }
 
-		return Form("image.png");
-	}
+	virtual bool is_bot() const { return false; };
 
-	//virtual int get_index_move() const {};
+	virtual bool is_wall() const { return false; };
 
-	//virtual Matrix<int> get_genome() const {};
+	virtual bool is_health() const { return false; };
+
+	virtual bool is_poison() const { return false; };
+
+	virtual bool is_empty() const { return true; };
 };
 
 

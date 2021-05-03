@@ -1,0 +1,2 @@
+D:\file\si\OOP\Testcor\Debug\Testcor.exe
+D:\file\si\OOP\Testcor\Debug\Testcor.pdb

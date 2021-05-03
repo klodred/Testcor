@@ -77,4 +77,21 @@ public:
 	int size_m() const { return m; };
 
 	int size_n() const { return n; };
+
+	bool cell_is_exist(int i, int j) {
+
+		if (i >= m or j >= m)
+			return false;
+
+		else
+			return true;
+	}
+
+	int one_dimensional_index(int i, int j) {
+
+		if (-1 < i && i < m && -1 < j && j < n) {
+
+			return i * n + j;
+		}
+	}
 };

@@ -1,4 +1,5 @@
 #include "Visualisation.h"
+#include <thread>
 
 void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
@@ -28,6 +29,7 @@ void Controller::run() {
 		//window.clear();
 		window.draw(*game);
 		window.display();
+
 	}
 }
 

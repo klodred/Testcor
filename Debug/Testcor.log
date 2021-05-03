@@ -1,0 +1,37 @@
+﻿  Command.cpp
+  Entity.cpp
+  Visualisation.cpp
+D:\file\si\OOP\Testcor\Visualisation.h(31,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(32,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(62,30): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.cpp(62,20): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  World.cpp
+  main.cpp
+D:\file\si\OOP\Testcor\Visualisation.h(31,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(32,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\main.cpp(6,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода...
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(96): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Command.cpp(198): warning C4715: Command::direction_identifier: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Command.cpp(175): warning C4715: Command::process_direction: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<int>::operator(): значение возвращается не при всех путях выполнения
+  Testcor.vcxproj -> D:\file\si\OOP\Testcor\Debug\Testcor.exe

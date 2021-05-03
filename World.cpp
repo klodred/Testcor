@@ -13,7 +13,10 @@ void Environment::populate(int count) {
 
 			this->matrix(i, j) = bot;
 			++c;
-			this->live_bots.push_back({ i, j });
+
+			int index = matrix.one_dimensional_index(i, j);
+			vector<int>::iterator pos = upper_bound(live_bots.begin(), live_bots.end(), index);
+			this->live_bots.insert(pos, index);
 		}
 	}
 }
@@ -28,40 +31,19 @@ void World::iteration_world() {
 	//}
 }
 
-void Environment::step(int i, int j) {
-	int index_move = ((Bot*)matrix(i, j))->get_index_move();
-	int current_move = ((Bot*)matrix(i, j))->get_genome()(index_move);
-
-	if (current_move < 6) {
-
-	
-	}
+void Environment::kill_bot(int i, int j) {
+	int index = matrix.one_dimensional_index(i, j);
+	vector<int>::iterator pos = find(live_bots.begin(), live_bots.end(), index);
+	live_bots.erase(pos);
+	matrix(i, j) = new EmptyEntity();
 }
 
-void Environment::look(int i, int j) {
-	Matrix<int> genome = ((Bot*)matrix(i, j))->get_genome();
-	int direction = genome.value_next_cell(i, j);
+void Environment::set_entity(std::pair<int, int> coordinates, Entity* entity) {
+	this->matrix(coordinates.first, coordinates.second) = entity;
 }
 
-std::pair<int, int> Environment::process_direction(int i, int j, int direction) {
-	
-	switch (direction) {
-
-	case 1: 
-		return { i, (j + 1) % matrix.size_n() };
-
-	case 2:
-
-	case 3:
-		return { (i + 1) % matrix.size_m(), j };
-
-	case 4:
-
-	case 5:
-		return { i, (j - 1) };
-
-
-	}
+Bot* Environment::get_access_to_bot(std::pair<int, int> coordinatis) {
+	return (Bot*)this->get_access_to_matrix()(coordinatis.first, coordinatis.second);
 }
 
 
