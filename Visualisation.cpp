@@ -74,9 +74,9 @@ GameModel* SettingsModel::process(sf::Event& event, sf::RenderWindow& window) {
 		if (this->buttons["Run"].isMouseOver(window)) {
 
 			cout << "Кнопка нажата\n";
-			World w(this->settings);
-			// todo set settings for world
-			return new WorldModel(w);
+			World* w = new World(this->settings);
+			GameModel* a = new WorldModel(*w);
+			return a;
 		}
 	}
 

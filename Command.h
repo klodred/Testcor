@@ -10,7 +10,9 @@ private:
 
 public:
 
-	Command(Environment* envir) : environment(envir) {};
+	Command(Environment* envir) { environment = envir; };
+
+	Command() {};
 
 	void process_command(int i, int j);
 

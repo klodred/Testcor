@@ -73,7 +73,7 @@ public:
 
 	void enlarge_energy(int _energy) { this->energy += _energy; };
 
-	void enlarge_index_move(int add) { this->index_move += add; };
+	void enlarge_index_move(int add) { this->index_move  = (index_move + add) % (genome.size_m() * genome.size_n()); };
 
 	bool is_die() { return energy < 0 ? true : false; };
 };

@@ -94,9 +94,9 @@ void Command::convert_to_food(int i, int j) {
 	int n = environment->size(), m = environment->size();
 	Matrix<Entity*> matrix = environment->get_matrix();
 
-	for (int counter_i = 0, i_dir = i - 1; counter_i < 3; ++counter_i, ++i) {
+	for (int counter_i = 0, i_dir = i - 1; counter_i < 3; ++counter_i, ++i_dir) {
 
-		for (int counter_j = 0, j_dir = j - 1; counter_j < 3; ++counter_j, ++j) {
+		for (int counter_j = 0, j_dir = j - 1; counter_j < 3; ++counter_j, ++j_dir) {
 
 			if (matrix.cell_is_exist(i_dir, j_dir)) {
 
@@ -104,11 +104,13 @@ void Command::convert_to_food(int i, int j) {
 
 					environment->get_access_to_bot({ i, j })->enlarge_energy(abs(((Poison*)matrix(i_dir, j_dir))->get_heal()));
 					environment->clear(i, j);
-					environment->get_access_to_bot({ i, j })->enlarge_index_move(1);
+					environment->get_access_to_bot({ i, j })->enlarge_index_move(4);
 				}
 			}
 		}
 	}
+
+	environment->get_access_to_bot({ i, j })->enlarge_index_move(1);
 }
 
 void Command::photosynthesis(int i, int j) {
@@ -131,8 +133,12 @@ void Command::move(int i, int j) {
         
 		environment->set_entity({ i_dir, j_dir }, bot);
 		environment->clear(i, j);
+		int one_dimension_dir = matrix.one_dimensional_index(i_dir, j_dir);
+		int one_dimension_bot = matrix.one_dimensional_index(i, j);
+		environment->set_index_in_live_bots(environment->find_index_in_live_bots(one_dimension_bot), one_dimension_dir);
 	}
 }
+
 std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
@@ -169,7 +175,7 @@ std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 	case 7:
 		return i - 1 < 0 ? std::pair<int, int> {m - 1, j} : std::pair<int, int>{ i - 1, j };
 
-	case 8:
+	case 0:
 		return i - 1 < 0 ? std::pair<int, int> {m - 1, (j + 1) % n} : std::pair<int, int>{ i - 1, (j + 1) % n };
 	}
 }

@@ -49,8 +49,8 @@ public:
 	}
 
 	T value_next_cell(int i, int j) const {
-		int nom = i * n + j;
-		nom %= 63;
+		int nom = i * n + j + 1;
+		nom %= (m * n);
 		return this->matrix[nom];
 	}
 	
@@ -80,11 +80,11 @@ public:
 
 	bool cell_is_exist(int i, int j) {
 
-		if (i >= m or j >= m)
-			return false;
+		if (-1 < i && i < m && -1 < j && j < n)
+			return true;
 
 		else
-			return true;
+			return false;
 	}
 
 	int one_dimensional_index(int i, int j) {

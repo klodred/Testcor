@@ -37,7 +37,13 @@ public:
 
 	//World(int size, int count) : settings(size, count), environment(size) { this->environment.populate(count); };
 
-	World(Settings _settings) : settings(_settings), environment(settings.get_size()), command(&environment) { this->environment.populate(settings.get_count_bots()); };
+	//World(Settings _settings) : settings(_settings), environment(settings.get_size()), command(&environment) { this->environment.populate(settings.get_count_bots()); };
+	World(Settings _settings) {
+		settings = _settings; 
+		environment = Environment(settings.get_size()); 
+		command = Command(&environment);
+		this->environment.populate(settings.get_count_bots());
+	};
 
 	void set_size(int size) { settings.set_size(size); };
 
