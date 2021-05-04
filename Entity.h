@@ -15,8 +15,8 @@ public:
 	Form(const std::string& image_path = "") : name(image_path) {};
 
 	sf::Image get_sprite() {
-		//ñîçäàåì îáúåêò Image (èçîáðàæåíèå)
-		s.loadFromFile(name);//çàãðóæàåì â íåãî ôàéë
+		//Ã±Ã®Ã§Ã¤Ã Ã¥Ã¬ Ã®Ã¡ÃºÃ¥ÃªÃ² Image (Ã¨Ã§Ã®Ã¡Ã°Ã Ã¦Ã¥Ã­Ã¨Ã¥)
+		s.loadFromFile(name);//Ã§Ã Ã£Ã°Ã³Ã¦Ã Ã¥Ã¬ Ã¢ Ã­Ã¥Ã£Ã® Ã´Ã Ã©Ã«
 		return s;
 	}
 };
@@ -75,6 +75,7 @@ public:
 
 	void enlarge_index_move(int add) { this->index_move  = (index_move + add) % (genome.size_m() * genome.size_n()); };
 
+	// ternar operator can be deleted)
 	bool is_die() { return energy <= 0 ? true : false; };
 };
 
