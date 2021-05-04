@@ -1,5 +1,5 @@
 #pragma once
-#include "World.h"
+#include "Environment.h"
 
 static int LOSSES = 10;
 enum commands { LOOK = 6, CONVERT_TO_FOOD = 11, STEAL = 15, PHOTOSYNTHESIS = 19, MOVE = 25 };

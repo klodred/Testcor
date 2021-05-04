@@ -94,4 +94,12 @@ public:
 			return i * n + j;
 		}
 	}
+
+	std::pair<int, int> two_dimensional_index(int i) {
+
+		if (-1 < i && i < n * m) {
+
+			return { i / n, i % n };
+		}
+	}
 };

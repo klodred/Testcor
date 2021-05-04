@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-static const int SIZE_GENOME = 8, MAX_COMMAND = 64;
+static const int SIZE_GENOME = 8, MAX_COMMAND = 24;
 
 class Form {
 	sf::Image s;
