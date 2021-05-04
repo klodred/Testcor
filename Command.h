@@ -10,7 +10,7 @@ private:
 
 public:
 
-	Command(Environment* envir) { environment = envir; };
+	Command(Environment* envir) : environment(envir) {};
 
 	Command() {};
 

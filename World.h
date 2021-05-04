@@ -39,11 +39,13 @@ public:
 
 	//World(Settings _settings) : settings(_settings), environment(settings.get_size()), command(&environment) { this->environment.populate(settings.get_count_bots()); };
 	World(Settings _settings) {
+		cout << &this->environment << "\n";
 		settings = _settings; 
 		environment = Environment(settings.get_size()); 
 		command = Command(&environment);
 		this->environment.populate(settings.get_count_bots());
-	};
+		
+	}
 
 	void set_size(int size) { settings.set_size(size); };
 

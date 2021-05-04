@@ -57,10 +57,10 @@ public:
 
 class WorldModel : public GameModel {
 private:
-	World world;
+	World* world;
 
 public:
-	WorldModel(World w) : world(w) {};
+	WorldModel(World* w) : world(w) {};
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

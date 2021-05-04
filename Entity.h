@@ -75,7 +75,7 @@ public:
 
 	void enlarge_index_move(int add) { this->index_move  = (index_move + add) % (genome.size_m() * genome.size_n()); };
 
-	bool is_die() { return energy < 0 ? true : false; };
+	bool is_die() { return energy <= 0 ? true : false; };
 };
 
 class Wall : public Entity {

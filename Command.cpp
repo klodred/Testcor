@@ -1,9 +1,9 @@
 #include "Command.h"
 
 void Command::process_command(int i, int j) {
-	Bot* bot = (Bot*)environment->get_matrix()(i, j);
-	int index = bot->get_index_move();
-	int step = bot->get_genome()(index);
+	Matrix<Entity*>* matr = environment->get_access_to_matrix();
+	int index = ((Bot*)(*matr)(i, j))->get_index_move();
+	int step = ((Bot*)(*matr)(i, j))->get_genome()(index);
 
 	if (step < LOOK)
 		this->look(i, j);
@@ -34,7 +34,8 @@ void Command::process_command(int i, int j) {
 			}
 		}
 	}
-		
+
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 }
 
 void Command::steal(int i, int j) {
@@ -120,7 +121,7 @@ void Command::photosynthesis(int i, int j) {
 void Command::move(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
-	Bot* bot = (Bot*)matrix(i, j);
+	Bot* bot = environment->get_access_to_bot({ i, j });
 	int direction = bot->get_genome().value_next_cell(i, j) % 8;
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
@@ -132,10 +133,8 @@ void Command::move(int i, int j) {
 			bot->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
         
 		environment->set_entity({ i_dir, j_dir }, bot);
+		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
 		environment->clear(i, j);
-		int one_dimension_dir = matrix.one_dimensional_index(i_dir, j_dir);
-		int one_dimension_bot = matrix.one_dimensional_index(i, j);
-		environment->set_index_in_live_bots(environment->find_index_in_live_bots(one_dimension_bot), one_dimension_dir);
 	}
 }
 

@@ -22,11 +22,13 @@ public:
 
 	Matrix<Entity*> get_matrix() const { return matrix; };
 
-	int get_current_count_bots() { return this->live_bots.size(); };
+	int get_count_live_bots() { return this->live_bots.size(); };
 
 	int get_count_die_bots() const { return this->die_bots.size(); };
 
 	Entity*& get_entity(int i, int j) { return matrix(i, j); };
+
+	void set_index_in_live_bots(std::pair <int, int>, std::pair<int, int>);
 
 	void set_index_in_live_bots(vector<int>::iterator pos, int index) { live_bots[pos - live_bots.begin()] = index; };
 
@@ -45,6 +47,8 @@ public:
 	Bot* get_access_to_bot(std::pair<int, int> coordinatis);
 
 	vector<int>* get_accses_to_live_bots() { return &live_bots; };
+
+	vector<int>* get_accses_to_die_bots() { return &die_bots; };
 
 	void kill_bot(int i, int j);
 

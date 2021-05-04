@@ -45,14 +45,14 @@ void SettingsModel::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 }
 void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
-	Matrix<Entity*> a = world.get_matrix();
-	int size = WINDOW_WIDTH / this->world.size();
+	Matrix<Entity*> a = world->get_matrix();
+	int size = WINDOW_WIDTH / this->world->size();
 	sf::Sprite s;
 	Form form;
 
-	for (int i = 0; i < this->world.size(); ++i) {
+	for (int i = 0; i < this->world->size(); ++i) {
 
-		for (int j = 0; j < this->world.size(); ++j) {
+		for (int j = 0; j < this->world->size(); ++j) {
 
 			form = a(i, j)->get_form();
 			sf::Image im = form.get_sprite();
@@ -75,7 +75,7 @@ GameModel* SettingsModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 			cout << "Кнопка нажата\n";
 			World* w = new World(this->settings);
-			GameModel* a = new WorldModel(*w);
+			GameModel* a = new WorldModel(w);
 			return a;
 		}
 	}
@@ -91,5 +91,6 @@ SettingsModel::SettingsModel(Settings _set) : settings(_set) {
 }
 
 void WorldModel::run() {
-	this->world.iteration_world();
+
+	this->world->iteration_world();
 }
