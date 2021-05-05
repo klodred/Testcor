@@ -78,7 +78,7 @@ public:
 
 	int size_n() const { return n; };
 
-	bool cell_is_exist(int i, int j) {
+	bool cell_is_exist(int i, int j) const {
 
 		if (-1 < i && i < m && -1 < j && j < n)
 			return true;
@@ -87,7 +87,7 @@ public:
 			return false;
 	}
 
-	int one_dimensional_index(int i, int j) {
+	int one_dimensional_index(int i, int j) const {
 
 		if (-1 < i && i < m && -1 < j && j < n) {
 
@@ -95,7 +95,7 @@ public:
 		}
 	}
 
-	std::pair<int, int> two_dimensional_index(int i) {
+	std::pair<int, int> two_dimensional_index(int i) const {
 
 		if (-1 < i && i < n * m) {
 

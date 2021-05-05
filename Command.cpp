@@ -28,14 +28,24 @@ void Command::process_command(int i, int j) {
 					if (step < MOVE)
 						this->move(i, j);
 
+					else {
+
+						if (step < EAT)
+							this->eat(i, j);
+
+						else {
+
+							if (step < COPY)
+								this->copy(i, j);
+						}
+					}
+
 
 				}
 
 			}
 		}
 	}
-
-	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 }
 
 void Command::steal(int i, int j) {
@@ -43,9 +53,9 @@ void Command::steal(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	bool flag = true;
 
-	for (int counter_i = 0, i_dir = i - 1; counter_i < 3 && flag; ++counter_i, ++i) {
+	for (int counter_i = 0, i_dir = i - 1; counter_i < 3 && flag; ++counter_i, ++i_dir) {
 
-		for (int counter_j = 0, j_dir = j - 1; counter_j < 3; ++counter_j, ++j) {
+		for (int counter_j = 0, j_dir = j - 1; counter_j < 3; ++counter_j, ++j_dir) {
 
 			if (matrix.cell_is_exist(i_dir, j_dir)) {
 
@@ -61,7 +71,7 @@ void Command::steal(int i, int j) {
 						if (((Bot*)matrix(i_dir, j_dir))->is_die())
 							environment->kill_bot(i_dir, j_dir);
 
-						environment->get_access_to_bot({ i, j })->enlarge_index_move(1);
+						environment->get_access_to_bot({ i, j })->enlarge_index_move(2);
 
 						break;
 					}
@@ -69,7 +79,12 @@ void Command::steal(int i, int j) {
 			}
 		}
 	}
+
+	int one = (environment->get_matrix()).one_dimensional_index(i, j);
+	environment->get_access_to_bot({ i, j })->enlarge_index_move(1);
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1); // совместить в одну у всех
 }
+
 void Command::look(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
@@ -85,10 +100,12 @@ void Command::look(int i, int j) {
 	if (matrix(i_dir, j_dir)->is_health()) {
 
 		((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal() - 1);
-		((Bot*)matrix(i, j))->enlarge_index_move(this->direction_identifier(matrix(i_dir, j_dir)));
 		environment->set_entity({ i_dir, j_dir }, (Bot*)matrix(i, j));
 		environment->set_entity({ i, j }, new EmptyEntity());
 	}
+
+	((Bot*)matrix(i, j))->enlarge_index_move(this->direction_identifier(matrix(i_dir, j_dir)));
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 }
 
 void Command::convert_to_food(int i, int j) {
@@ -112,10 +129,13 @@ void Command::convert_to_food(int i, int j) {
 	}
 
 	environment->get_access_to_bot({ i, j })->enlarge_index_move(1);
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 }
 
 void Command::photosynthesis(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_energy(4);
+	environment->get_access_to_bot({ i, j })->enlarge_index_move(2);
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 }
 
 void Command::move(int i, int j) {
@@ -126,6 +146,7 @@ void Command::move(int i, int j) {
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 
 	if (matrix(i_dir, j_dir)->can_be_step()) {
 
@@ -136,6 +157,87 @@ void Command::move(int i, int j) {
 		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
 		environment->clear(i, j);
 	}
+
+	((Bot*)matrix(i, j))->enlarge_index_move(this->direction_identifier(matrix(i_dir, j_dir)));
+}
+
+void Command::eat(int i, int j) {
+	Matrix<Entity*> matrix = environment->get_matrix();
+	int n = matrix.size_n(), m = matrix.size_m();
+	Bot* bot = environment->get_access_to_bot({ i, j });
+	int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
+
+	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+
+	if (matrix(i_dir, j_dir)->is_eatable()) {
+
+		if (matrix(i_dir, j_dir)->is_bot()) {
+
+			if (((Bot*)matrix(i, j))->get_energy() > ((Bot*)matrix(i_dir, j_dir))->get_energy()) {
+
+				((Bot*)matrix(i, j))->enlarge_energy(((Bot*)matrix(i_dir, j_dir))->get_energy());
+				environment->kill_bot(i_dir, j_dir);
+			}
+		}
+
+		else {
+
+			if (matrix(i_dir, j_dir)->is_wall())
+				environment->clear(i_dir, j_dir);
+
+			else {
+
+				if (matrix(i_dir, j_dir)->is_health() or matrix(i_dir, j_dir)->is_poison()) {
+
+					((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
+					environment->clear(i_dir, j_dir);
+				}
+			}
+		}
+	}
+
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
+	environment->get_access_to_bot({ i, j })->enlarge_index_move(this->direction_identifier(matrix(i_dir, j_dir)));
+}
+
+// перепроверить, сохранится ли бот
+// подумать, оставить тот же запас энергии или другой
+void Command::copy(int i, int j) {
+	Bot* a = new Bot;
+	*a = environment->get_bot(i, j);
+	Matrix<Entity*>* matr = environment->get_access_to_matrix();
+	int size = matr->size_m() * matr->size_n();
+	bool flag = false;
+
+	while (!flag) {
+
+		int index = rand() % size;
+
+		if ((*matr)(index)->can_be_step()) {
+
+			flag = true;
+			(*matr)(index) = a;
+			environment->get_accses_to_live_bots()->push_back(index);
+		}
+	}
+
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-3);
+	environment->get_access_to_bot({ i, j })->enlarge_index_move(5);
+}
+
+// Обмен всех минералов или какого то определенного кол-ва
+// Перенести константу (константа, атрибут настроек или атрибут мира)
+void Command::swap_minerals(int i, int j) {
+	Bot* a = environment->get_access_to_bot({ i, j });
+
+	if (a->get_minerals() >= MINERALS) {
+
+		for (int i = 0; i < a->get_minerals(); ++i)
+			a->enlarge_energy(4);
+	}
+
+	environment->get_access_to_bot({ i, j })->enlarge_energy(-3);
 }
 
 std::pair<int, int> Command::process_direction(int i, int j, int direction) {

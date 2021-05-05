@@ -22,6 +22,8 @@ public:
 
 	Matrix<Entity*> get_matrix() const { return matrix; };
 
+	Bot get_bot(int i, int j) { return *((Bot*)matrix(i, j)); };
+
 	int get_count_live_bots() { return this->live_bots.size(); };
 
 	int get_count_die_bots() const { return this->die_bots.size(); };

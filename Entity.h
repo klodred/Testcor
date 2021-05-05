@@ -31,6 +31,8 @@ public:
 
 	bool can_be_step() { return this->steapble; };
 
+	bool is_eatable() { return this->eatable; };
+
 	virtual bool is_bot() const = 0;
 
 	virtual bool is_wall() const = 0;
@@ -40,6 +42,7 @@ public:
 	virtual bool is_poison() const = 0;
 
 	virtual bool is_empty() const = 0;
+
 };
 
 class Bot : public Entity {
@@ -47,17 +50,20 @@ private:
 	int index_move;
 	Matrix<int> genome;
 	int energy;
+	int minerals;
 
 public:
 	Bot();
 
-	Bot(int move, const Matrix<int>& gen, int ener) : index_move(move), genome(gen), energy(ener) { steapble = false; };
+	Bot(int move, const Matrix<int>& gen, int ener) : index_move(move), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
 	virtual Form get_form() { return Form("bot.png"); };
 
 	int get_index_move() { return index_move; };
 
 	int get_energy() const { return energy; };
+
+	int get_minerals() const { return minerals; };
 
 	Matrix<int> get_genome() const { return genome; };
 
@@ -83,7 +89,7 @@ private:
 	int damage;
 
 public:
-	Wall() { damage = 0; steapble = false; };
+	Wall() { damage = 0; steapble = false; eatable = true; };
 	virtual Form get_form() { return Form("image.jpg"); }
     
 	virtual bool is_bot() const { return false; };
@@ -139,9 +145,9 @@ public:
 
 class EmptyEntity : public Entity {
 public:
-	EmptyEntity() { steapble = true; };
+	EmptyEntity() { steapble = true; eatable = false; };
 
-	virtual Form get_form() { return Form("image.png"); }
+	virtual Form get_form() { return Form("empty.png"); }
 
 	virtual bool is_bot() const { return false; };
 

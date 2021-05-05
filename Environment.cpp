@@ -15,7 +15,7 @@ void Environment::populate(int count) {
 			++c;
 
 			int index = matrix.one_dimensional_index(i, j);
-			vector<int>::iterator pos = upper_bound(live_bots.begin(), live_bots.end(), index);
+			vector<int>::iterator pos = lower_bound(live_bots.begin(), live_bots.end(), index);
 			this->live_bots.insert(pos, index);
 		}
 	}
@@ -24,7 +24,7 @@ void Environment::populate(int count) {
 void Environment::kill_bot(int i, int j) {
 
 	int index = matrix.one_dimensional_index(i, j);
-	vector<int>::iterator pos = upper_bound(die_bots.begin(), die_bots.end(), index);
+	vector<int>::iterator pos = lower_bound(die_bots.begin(), die_bots.end(), index);
 	die_bots.insert(pos, index);
 	this->clear(i, j);
 }
