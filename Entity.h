@@ -15,8 +15,8 @@ public:
 	Form(const std::string& image_path = "") : name(image_path) {};
 
 	sf::Image get_sprite() {
-		//ñîçäàåì îáúåêò Image (èçîáðàæåíèå)
-		s.loadFromFile(name);//çàãðóæàåì â íåãî ôàéë
+		
+		s.loadFromFile(name);
 		return s;
 	}
 };
@@ -47,7 +47,7 @@ public:
 
 class Bot : public Entity {
 private:
-	int index_move;
+	int index_step;
 	Matrix<int> genome;
 	int energy;
 	int minerals;
@@ -55,11 +55,11 @@ private:
 public:
 	Bot();
 
-	Bot(int move, const Matrix<int>& gen, int ener) : index_move(move), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
+	Bot(int step, const Matrix<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
 	virtual Form get_form() { return Form("bot.png"); };
 
-	int get_index_move() { return index_move; };
+	int get_index_step() { return index_step; };
 
 	int get_energy() const { return energy; };
 
@@ -79,10 +79,9 @@ public:
 
 	void enlarge_energy(int _energy) { this->energy += _energy; };
 
-	void enlarge_index_move(int add) { this->index_move  = (index_move + add) % (genome.size_m() * genome.size_n()); };
+	void enlarge_index_step(int add) { this->index_step  = (index_step + add) % (genome.size_m() * genome.size_n()); };
 
-	// ternar operator can be deleted)
-	bool is_die() { return energy <= 0 ? true : false; };
+	bool is_die() { return energy <= 0; };
 };
 
 class Wall : public Entity {

@@ -3,7 +3,7 @@
 void World::iteration_world() {
 	int count = this->environment.get_count_live_bots();
 	vector<int>* live_bots = this->environment.get_accses_to_live_bots();
-	    
+
 	for (int i = 0; i < count; ++i) {
 
 		std::pair<int, int> coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
@@ -27,6 +27,8 @@ void World::iteration_world() {
 
 		this->environment.erase_die_bots();
 	}
+	time++;
+
 }
 
 

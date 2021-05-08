@@ -2,36 +2,14 @@
 #include "Environment.h"
 #include "Command.h"
 #include <algorithm>
-
-static const int ENVIRONMENT_HEIGHT = 60, ENVIRONMENT_WIDTH = 60;
-
-class Settings {
-private:
-	int size_environment;
-	int count_bots;
-	int start_energy;
-
-public:
-	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 10; };
-
-	Settings(int size, int count) : size_environment(size), count_bots(count) {};
-
-	int get_size() { return size_environment; };
-
-	void set_size(int size) { size_environment = size; };
-
-	int get_count_bots() { return count_bots; };
-
-	void set_count_bots(int count) { count_bots = count; };
-};
-
+#include "Settings.h"
 
 class World {
 private:
 	Settings settings;
 	Environment environment;
 	Command command;
-	//int time;
+	int time;
 
 public:
 
@@ -42,8 +20,9 @@ public:
 		cout << &this->environment << "\n";
 		settings = _settings; 
 		environment = Environment(settings.get_size()); 
-		command = Command(&environment);
+		command = Command(&environment, &settings);
 		this->environment.populate(settings.get_count_bots());
+		time = 0;
 		
 	}
 
