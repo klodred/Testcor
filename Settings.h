@@ -8,10 +8,9 @@ class Settings {
 	int count_bots;
 	int start_energy;
 	enum season { SUMMER = 100, AUTUMN = SUMMER + 100, SPRING = AUTUMN + 100, WINTER = SPRING + 100 };
-	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -2, lost_energy_by_swap_minerals = -10;;
+	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -2, lost_energy_by_swap_minerals = -10;
 	int energy_from_mineral = 3;
 	int index_step_by_steal = 2, index_step_by_convert_to_food = 4, index_step_by_photosynthesis = 3;
-	int index_step_by_swap_minerals = 2;
 	int current_season = SUMMER;
 
 	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 10; };
@@ -44,7 +43,7 @@ class Settings {
 
 	int index_step_by_eat(Entity* entity) { return this->direction_identifier(entity); };
 
-	int count_minerals_for_swap(vector<int> live_bots, Matrix<Entity*> matr);
+	int requariable_count_minerals_for_swap(vector<int> live_bots, Matrix<Entity*> matr);
 
 	int index_step_by_swap_minerals(int minerals) { return minerals % 24; };
 };

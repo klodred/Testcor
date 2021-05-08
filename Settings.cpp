@@ -74,7 +74,7 @@ int Settings::energy_by_photosynthesis() {
 	}
 }
 
-int Settings::count_minerals_for_swap(vector<int> live_bots, Matrix<Entity*> matr) {
+int Settings::requariable_count_minerals_for_swap(vector<int> live_bots, Matrix<Entity*> matr) {
 	int sum_minerals = 0, count = 0;
 
 	for (int i = 0; i < live_bots.size(); ++i) {

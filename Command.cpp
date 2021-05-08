@@ -229,14 +229,14 @@ void Command::swap_minerals(int i, int j) {
 	Bot* a = environment->get_access_to_bot({ i, j });
 	int minerals = a->get_minerals();
 
-	if (minerals >= settings->count_minerals_for_swap(environment->get_live_bots(), environment->get_matrix())) {
+	if (minerals >= settings->requariable_count_minerals_for_swap(environment->get_live_bots(), environment->get_matrix())) {
 
 		for (int i = 0; i < minerals; ++i)
 			a->enlarge_energy(settings->energy_from_mineral);
 	}
 
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_swap_minerals);
-	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_swap_minerals);
+	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_swap_minerals(minerals));
 }
 
 void Command::eat_bot(int i, int j) {
