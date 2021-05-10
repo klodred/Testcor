@@ -24,6 +24,7 @@ void Environment::populate(int count) {
 void Environment::kill_bot(int i, int j) {
 
 	int index = matrix.one_dimensional_index(i, j);
+	this->get_access_to_bot({ i, j })->set_energy(0);
 	vector<int>::iterator pos = lower_bound(die_bots.begin(), die_bots.end(), index);
 	die_bots.insert(pos, index);
 	this->clear(i, j);
@@ -56,3 +57,71 @@ void Environment::set_index_in_live_bots(std::pair <int, int> coord, std::pair<i
 	vector<int>::iterator pos = find(live_bots.begin(), live_bots.end(), one_dimen_old);
 	live_bots[pos - live_bots.begin()] = matrix.one_dimensional_index(new_coord.first, new_coord.second);;
 };
+
+std::pair<int, int> Environment::nearest_empty_cell(int i, int j) {
+	bool flag = false;
+	int k = 0;
+	int m = matrix.size_m();
+
+	while (k < m) {
+
+		for (int counter_i = 0, i_dir = i - 1; counter_i < 3 + k; ++counter_i, ++i_dir) {
+
+			for (int counter_j = 0, j_dir = j - 1; counter_j < 3 + k; ++counter_j, ++j_dir) {
+
+				if (matrix.cell_is_exist(i_dir, j_dir)) {
+
+					if (matrix(i_dir, j_dir)->is_empty()) {
+
+						return { i_dir, j_dir };
+					}
+				}
+			}
+		}
+
+		++k;
+		--i;
+		--j;
+	}
+}
+
+void Environment::generation_wall(int count) {
+	while (count > 0) {
+
+		int pos = rand() % (matrix.size_m() * matrix.size_n());
+
+		if (matrix(pos)->is_empty()) {
+
+			matrix(pos) = new Wall;
+			--count;
+		}
+	}
+}
+
+void Environment::generation_health(int count) {
+	while (count > 0) {
+
+		int pos = rand() % (matrix.size_m() * matrix.size_n());
+
+		if (matrix(pos)->is_empty()) {
+
+			Health* h = new Health(generation_health());
+			matrix(pos) = h;
+			--count;
+		}
+	}
+}
+
+void Environment::generation_poison(int count) {
+	while (count > 0) {
+
+		int pos = rand() % (matrix.size_m() * matrix.size_n());
+
+		if (matrix(pos)->is_empty()) {
+
+			Poison* h = new Poison(generation_poison());
+			matrix(pos) = h;
+			--count;
+		}
+	}
+}

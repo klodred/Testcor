@@ -13,17 +13,17 @@ private:
 
 public:
 
-	//World(int size, int count) : settings(size, count), environment(size) { this->environment.populate(count); };
-
-	//World(Settings _settings) : settings(_settings), environment(settings.get_size()), command(&environment) { this->environment.populate(settings.get_count_bots()); };
 	World(Settings _settings) {
 		cout << &this->environment << "\n";
 		settings = _settings; 
 		environment = Environment(settings.get_size()); 
 		command = Command(&environment, &settings);
-		this->environment.populate(settings.get_count_bots());
+
+		environment.populate(settings.get_count_bots());
+		environment.generation_health(settings.count_heal());
+		environment.generation_poison(settings.count_poison());
+		environment.generation_wall(settings.count_wall());
 		time = 0;
-		
 	}
 
 	void set_size(int size) { settings.set_size(size); };

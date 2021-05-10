@@ -155,8 +155,10 @@
     <ClInclude Include="Command.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Settings.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Visualisation.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

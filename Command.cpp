@@ -9,6 +9,10 @@ void Command::process_command(int i, int j) {
 	int index = ((Bot*)(*matr)(i, j))->get_index_step();
 	int step = ((Bot*)(*matr)(i, j))->get_genome()(index);
 	// if max then copy this
+	if (DEBUG) {
+		cout << "команда " << step << "\n";
+	}
+
 	if (step < LOOK)
 		this->look(i, j);
 
@@ -41,12 +45,33 @@ void Command::process_command(int i, int j) {
 
 							if (step < COPY)
 								this->copy(i, j);
+
+							else {
+
+								if (step < SWAP_MINERALS)
+									this->swap_minerals(i, j);
+
+								else {
+
+									if (step < EAT_BOT)
+										this->eat_bot(i, j);
+
+									else {
+
+										if (step < CHECK_ENERGY)
+											this->check_energy(i, j);
+
+										else {
+
+											if (step < CYCLIC_MOVE)
+												this->cyclic_move(i, j, step);
+										}
+									}
+								}
+							}
 						}
 					}
-
-
 				}
-
 			}
 		}
 	}
@@ -195,32 +220,34 @@ void Command::eat(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->direction_identifier(matrix(i_dir, j_dir)));
 }
 
-// перепроверить, сохранится ли бот
-// подумать, оставить тот же запас энергии или другой
 void Command::copy(int i, int j) {
-	// получить 
-	//*a = environment->get_bot(i, j)
-	// ошибка в геном
-	// создание бота
-		Bot * a = new Bot;
+	Bot * a = new Bot;
 	Matrix<Entity*>* matr = environment->get_access_to_matrix();
 	int size = matr->size_m() * matr->size_n();
-	bool flag = false;
+	double chance_mutation = (rand() % 100) / (double)100;
 
-	while (!flag) {
+	if (chance_mutation <= settings->chance_mutation) {
 
-		int index = rand() % size;
-
-		if ((*matr)(index)->can_be_step()) {
-
-			flag = true;
-			(*matr)(index) = a;
-			environment->get_accses_to_live_bots()->push_back(index);
-		}
+		int position_in_genome = rand() % a->get_genome().size_m() * a->get_genome().size_n();
+		int command = rand() % MAX_COMMAND;
+		Matrix<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
+		genome(position_in_genome) = command;
+		a->set_genome(genome);
 	}
+	
+	int energy = settings->energy_by_copy(((Bot*)((*matr)(i, j)))->get_energy());
+	a->enlarge_energy(energy);
+	((Bot*)((*matr)(i, j)))->enlarge_energy(-energy);
 
-	environment->get_access_to_bot({ i, j })->enlarge_energy(-3);
-	environment->get_access_to_bot({ i, j })->enlarge_index_step(5);
+	int minerals = settings->minerals_by_copy(((Bot*)((*matr)(i, j)))->get_minerals());
+	a->set_minerals(minerals);
+	((Bot*)((*matr)(i, j)))->enlarge_minerals(-minerals);
+
+	std::pair<int, int> position_in_environment = environment->nearest_empty_cell(i, j);
+	environment->set_entity(position_in_environment, a);
+
+	environment->get_accses_to_live_bots()->push_back(matr->one_dimensional_index(position_in_environment.first, position_in_environment.second));
+	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_copy);
 }
 
 // Обмен всех минералов или какого то определенного кол-ва
@@ -252,29 +279,34 @@ void Command::eat_bot(int i, int j) {
 
 		if (((Bot*)matrix(i, j))->get_energy() > ((Bot*)matrix(i_dir, j_dir))->get_energy()) {
 
-			((Bot*)matrix(i, j))->enlarge_energy(((Bot*)matrix(i_dir, j_dir))->get_energy());
+			((Bot*)matrix(i, j))->enlarge_energy(settings->energy_by_eat_bot(((Bot*)matrix(i_dir, j_dir))->get_energy()));
 			environment->kill_bot(i_dir, j_dir);
+			((Bot*)matrix(i, j))->enlarge_energy(settings->lost_energy_by_eat_bot);
 		}
 	}
 
-	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
-	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->direction_identifier(matrix(i_dir, j_dir)));
+	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
+	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_eat_bot(matrix(i_dir, j_dir)));
 }
 
-/*
+
 void Command::check_energy(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int energy = ((Bot*)matrix(i, j))->get_energy();
 
-	if (energy > ...) 
-		environment->get_access_to_bot({ i, j })->enlarge_index_step(...);
+	if (energy > settings->bias_const) 
+		environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_greater_than_bias);
 
 	else
-		environment->get_access_to_bot({ i, j })->enlarge_index_step(...);
+		environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_lower_than_bias);
 
-	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
+	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
-*/
+
+void Command::cyclic_move(int i, int j, int step) {
+	environment->get_access_to_bot({ i, j })->enlarge_index_step(step);
+	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
+}
 
 std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 	Matrix<Entity*> matrix = environment->get_matrix();
@@ -297,7 +329,7 @@ std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 	case 5:
 		return j - 1 < 0 ? std::pair<int, int> {i, n - 1} : std::pair<int, int>{ i, j - 1 };
 
-	case 6: // возможно ли упростить ?
+	case 6: 
 		if (j - 1 < 0) {
 
 			if (i - 1 < 0)

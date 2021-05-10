@@ -3,8 +3,15 @@
 #include "Matrix.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "ImageLoader.h"
 
-static const int SIZE_GENOME = 8, MAX_COMMAND = 24;
+enum commands {
+	LOOK = 6, CONVERT_TO_FOOD = 11, STEAL = 15, PHOTOSYNTHESIS = 19, MOVE = 25, EAT = 29, COPY = 32,
+	SWAP_MINERALS = 35, EAT_BOT = 37, CHECK_ENERGY = 40, CYCLIC_MOVE = 63
+};
+
+static enum {SUN, MINERALS, MEAT, MIXED};
+static const int SIZE_GENOME = 8, MAX_COMMAND = 63;
 
 class Form {
 	sf::Image s;
@@ -16,7 +23,7 @@ public:
 
 	sf::Image get_sprite() {
 		
-		s.loadFromFile(name);
+		s = ImageLoader::get_instance().get_image(name);
 		return s;
 	}
 };
@@ -51,13 +58,14 @@ private:
 	Matrix<int> genome;
 	int energy;
 	int minerals;
+	int type;
 
 public:
 	Bot();
 
 	Bot(int step, const Matrix<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
-	virtual Form get_form() { return Form("bot.png"); };
+	virtual Form get_form() { return Form("sunBot.png"); };
 
 	int get_index_step() { return index_step; };
 
@@ -66,6 +74,8 @@ public:
 	int get_minerals() const { return minerals; };
 
 	Matrix<int> get_genome() const { return genome; };
+
+	void set_genome(Matrix<int> _genome) { genome = _genome; };
 
 	virtual bool is_bot() const { return true; };
 
@@ -79,9 +89,17 @@ public:
 
 	void enlarge_energy(int _energy) { this->energy += _energy; };
 
+	void set_energy(int _energy) { energy = _energy; };
+
+	void enlarge_minerals(int _minerals) { this->minerals += _minerals; };
+
+	void set_minerals(int _minerals) { minerals = _minerals; };
+
 	void enlarge_index_step(int add) { this->index_step  = (index_step + add) % (genome.size_m() * genome.size_n()); };
 
 	bool is_die() { return energy <= 0; };
+
+	int define_the_type();
 };
 
 class Wall : public Entity {
@@ -90,7 +108,7 @@ private:
 
 public:
 	Wall() { damage = 0; steapble = false; eatable = true; };
-	virtual Form get_form() { return Form("image.jpg"); }
+	virtual Form get_form() { return Form("wall.png"); }
     
 	virtual bool is_bot() const { return false; };
 
@@ -124,7 +142,9 @@ public:
 
 class Health : public Nutrition {
 public:
-	virtual Form get_form() { return Form("image.jpg"); }
+	Health(int h) : Nutrition(h) {};
+
+	virtual Form get_form() { return Form("health.png"); }
 
 	virtual bool is_health() const { return true; };
 
@@ -133,9 +153,11 @@ public:
 
 class Poison : public Nutrition {
 public:
+	Poison(int h) : Nutrition(h) {};
+
 	virtual Form get_form() {
 
-		return Form("image.jpg");
+		return Form("poison.png");
 	}
 
 	virtual bool is_health() const { return false; };

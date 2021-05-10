@@ -8,13 +8,13 @@ private:
 	vector<int> die_bots;
 
 public:
-	Environment() { matrix.resize(SIZE_MAX, SIZE_MAX); };
+	Environment() { };
 
-	Environment(int size) {
-		matrix.resize(size, size);
+	Environment(int m) {
+		matrix.resize(m, m);
 
-		for (int i = 0; i < size; ++i)
-			for (int j = 0; j < size; ++j)
+		for (int i = 0; i < m; ++i)
+			for (int j = 0; j < m; ++j)
 				matrix(i, j) = new EmptyEntity();
 	};
 
@@ -44,6 +44,8 @@ public:
 
 	void set_entity(std::pair<int, int> coordinates, Entity* entity);
 
+	void set_entity(int pos, Entity* entity) { matrix(pos) = entity; };
+
 	Matrix<Entity*>* get_access_to_matrix() { return &matrix; };
 
 	Bot* get_access_to_bot(std::pair<int, int> coordinatis);
@@ -57,4 +59,18 @@ public:
 	void erase_die_bots();
 
 	void clear(int i, int j) { matrix(i, j) = new EmptyEntity; };
+
+	std::pair<int, int> nearest_empty_cell(int i, int j);
+
+	int generation_health() { return 1 + rand() % 5; };
+
+	int generation_poison() { return -(1 + rand() % 5); };
+
+	void generation_wall(int count);
+
+	void generation_health(int count);
+
+	void generation_poison(int count);
+
+	bool is_bot_die(int index) { return find(die_bots.begin(), die_bots.end(), index) != die_bots.end(); };
 };

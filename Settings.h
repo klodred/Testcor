@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 static const int ENVIRONMENT_HEIGHT = 60, ENVIRONMENT_WIDTH = 60;
+static const int DEBUG = 1;
 
 class Settings {
 	public:
@@ -8,9 +9,21 @@ class Settings {
 	int count_bots;
 	int start_energy;
 	enum season { SUMMER = 100, AUTUMN = SUMMER + 100, SPRING = AUTUMN + 100, WINTER = SPRING + 100 };
+
 	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -2, lost_energy_by_swap_minerals = -10;
+	int lost_energy_by_eat_bot = -5;
+
 	int energy_from_mineral = 3;
+
+	int bias_const = 42;
+
 	int index_step_by_steal = 2, index_step_by_convert_to_food = 4, index_step_by_photosynthesis = 3;
+	int index_step_greater_than_bias = 4, index_step_lower_than_bias = 2, index_step_by_copy = 5;
+
+	double chance_mutation = 0.25;
+
+	int time_for_generation_resource = 100;
+
 	int current_season = SUMMER;
 
 	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 10; };
@@ -33,6 +46,12 @@ class Settings {
 
 	int energy_by_photosynthesis();
 
+	int energy_by_copy(int energy) { return energy / 4; };
+
+	int minerals_by_copy(int energy) { return energy / 4; };
+
+	int energy_by_eat_bot(int energy) const { return energy; };
+
 	int lost_energy_by_step();
 
 	int index_step();
@@ -46,4 +65,13 @@ class Settings {
 	int requariable_count_minerals_for_swap(vector<int> live_bots, Matrix<Entity*> matr);
 
 	int index_step_by_swap_minerals(int minerals) { return minerals % 24; };
+
+	int index_step_by_eat_bot(Entity* entity) { return  this->direction_identifier(entity); };
+
+	int count_wall() { return rand() % (size_environment / 40 * size_environment); };
+
+	int count_poison() { return rand() % (size_environment / 40 * size_environment); };
+
+	int count_heal() { return rand() % (size_environment / 40 * size_environment); };
+
 };
