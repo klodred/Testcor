@@ -11,6 +11,7 @@ void Command::process_command(int i, int j) {
 	// if max then copy this
 	if (DEBUG) {
 		cout << "команда " << step << "\n";
+		cout << "индекс команды " << index << "\n";
 	}
 
 	if (step < LOOK)
@@ -130,6 +131,7 @@ void Command::look(int i, int j) {
 
 		((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
 		environment->set_entity({ i_dir, j_dir }, (Bot*)matrix(i, j));
+		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
 		environment->clear(i, j);
 	}
 
@@ -150,8 +152,8 @@ void Command::convert_to_food(int i, int j) {
 				if (matrix(i_dir, j_dir)->is_poison()) {
 
 					environment->get_access_to_bot({ i, j })->enlarge_energy(abs(((Poison*)matrix(i_dir, j_dir))->get_heal()));
-					environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_convert_to_food);
-					environment->clear(i, j);
+					//environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_convert_to_food);
+					environment->clear(i_dir, j_dir);
 					environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_convert_to_food);
 				}
 			}
@@ -163,8 +165,9 @@ void Command::convert_to_food(int i, int j) {
 }
 
 void Command::photosynthesis(int i, int j) {
+	
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->energy_by_photosynthesis());
-	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_photosynthesis);
+	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_photosynthesis((environment->get_bot(i, j)).get_energy()));
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step());
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
@@ -174,9 +177,15 @@ void Command::move(int i, int j) {
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
 	int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+
+	if (DEBUG) {
+		cout << "направление " << i_dir << ", " << j_dir << "\n";
+	}
+
 	environment->get_access_to_bot({ i, j })->enlarge_energy(-1);
 
 	if (matrix(i_dir, j_dir)->can_be_step()) {
@@ -233,6 +242,7 @@ void Command::copy(int i, int j) {
 		Matrix<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
 		genome(position_in_genome) = command;
 		a->set_genome(genome);
+		a->set_type(a->define_the_type());
 	}
 	
 	int energy = settings->energy_by_copy(((Bot*)((*matr)(i, j)))->get_energy());
@@ -246,7 +256,7 @@ void Command::copy(int i, int j) {
 	std::pair<int, int> position_in_environment = environment->nearest_empty_cell(i, j);
 	environment->set_entity(position_in_environment, a);
 
-	environment->get_accses_to_live_bots()->push_back(matr->one_dimensional_index(position_in_environment.first, position_in_environment.second));
+	environment->get_accses_to_live_bots()->push_back(matr->one_dimensional_index(position_in_environment));
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_copy);
 }
 
@@ -274,6 +284,10 @@ void Command::eat_bot(int i, int j) {
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+
+	if (DEBUG) {
+		cout << "направление " << i_dir << ", " << j_dir << "\n";
+	}
 
 	if (matrix(i_dir, j_dir)->is_bot()) {
 

@@ -19,6 +19,7 @@ void World::iteration_world() {
 					cout << "это не бот\n";
 				cout << "»ндексы бота \n" << "одномерный : " << one_dim << "\nдвумерный " << coordinates.first << ", " << coordinates.second << "\n";
 				cout << "√еном\n";
+				cout << "Ёнерги€ " << ((Bot*)environment.get_matrix()(one_dim))->get_energy() << "\n";
 				Matrix<int> genome = environment.get_access_to_bot(coordinates)->get_genome();
 				cout << genome << "\n";
 			}
@@ -51,6 +52,33 @@ void World::iteration_world() {
 		environment.generation_health(settings.count_heal());
 		environment.generation_poison(settings.count_poison());
 		environment.generation_wall(settings.count_wall());
+	}
+
+	this->change_season();
+}
+
+void World::change_season() {
+	int ost = this->time % settings.WINTER;
+
+	if (ost / settings.SUMMER == 0)
+		settings.current_season = settings.SUMMER;
+
+	else {
+
+		if (ost / settings.AUTUMN == 0)
+			settings.current_season = settings.AUTUMN;
+
+		else {
+
+			if (ost / settings.SPRING == 0)
+				settings.current_season = settings.SPRING;
+
+			else {
+
+				if (ost / settings.WINTER == 0)
+					settings.current_season = settings.WINTER;
+			}
+		}
 	}
 }
 

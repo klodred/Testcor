@@ -65,7 +65,7 @@ public:
 
 	Bot(int step, const Matrix<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
-	virtual Form get_form() { return Form("sunBot.png"); };
+	virtual Form get_form();
 
 	int get_index_step() { return index_step; };
 
@@ -100,6 +100,8 @@ public:
 	bool is_die() { return energy <= 0; };
 
 	int define_the_type();
+
+	void set_type(int _type) { this->type = _type; };
 };
 
 class Wall : public Entity {
@@ -183,3 +185,5 @@ public:
 };
 
 
+
+int index_max(vector<int> vec);

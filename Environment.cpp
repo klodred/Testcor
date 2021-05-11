@@ -6,17 +6,13 @@ void Environment::populate(int count) {
 	while (c < count) {
 
 		Bot* bot = new Bot;
-		int i = rand() % this->matrix.size_m();
-		int j = rand() % this->matrix.size_n();
+		int pos = rand() % this->matrix.size();
 
-		if (this->matrix(i, j)->can_be_step()) {
+		if (this->matrix(pos)->can_be_step()) {
 
-			this->matrix(i, j) = bot;
+			this->matrix(pos) = bot;
 			++c;
-
-			int index = matrix.one_dimensional_index(i, j);
-			vector<int>::iterator pos = lower_bound(live_bots.begin(), live_bots.end(), index);
-			this->live_bots.insert(pos, index);
+			this->live_bots.push_back(pos);
 		}
 	}
 }
@@ -25,7 +21,7 @@ void Environment::kill_bot(int i, int j) {
 
 	int index = matrix.one_dimensional_index(i, j);
 	this->get_access_to_bot({ i, j })->set_energy(0);
-	vector<int>::iterator pos = lower_bound(die_bots.begin(), die_bots.end(), index);
+	vector<int>::iterator pos = upper_bound(die_bots.begin(), die_bots.end(), index);
 	die_bots.insert(pos, index);
 	this->clear(i, j);
 }
@@ -44,7 +40,6 @@ void Environment::erase_die_bots() {
 	for (int i = 0; i < die_bots.size(); ++i) {
 
         int pos_for_erase = find(live_bots.begin() + pos_for_search, live_bots.end(), die_bots[i]) - live_bots.begin();
-			//vector<int>::iterator pos_for_erase = find(pos_for_search, live_bots.end(), die_bots[i]);
 	    live_bots.erase(live_bots.begin() + pos_for_erase);
 		pos_for_search = pos_for_erase;
 	}

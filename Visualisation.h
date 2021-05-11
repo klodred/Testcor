@@ -67,6 +67,7 @@ public:
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window) { return this; };
 
 	virtual void run();
+
 };
 
 class SettingsModel : public GameModel {

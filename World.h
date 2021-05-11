@@ -35,6 +35,10 @@ public:
 	Matrix<Entity*> get_matrix() const { return environment.get_matrix(); };
 
 	int size() const { return this->environment.size(); };
+
+	Settings get_settings() const { return settings; }; // ?
+
+	void change_season();
 };
 
 

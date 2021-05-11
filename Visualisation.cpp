@@ -7,7 +7,7 @@ void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
 	window.setFramerateLimit(60);
 	sf::Event event;
-	Timer timer(500);
+	Timer timer(100);
 	while (window.isOpen())
 	{
 
@@ -63,18 +63,43 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		start = std::chrono::system_clock::now();
 
 	}
+
 	states.transform *= getTransform();
 	Matrix<Entity*> a = world->get_matrix();
 	int size = WINDOW_WIDTH / this->world->size();
 	sf::Sprite s;
 	Form form;
-	sf::Image im = ImageLoader::get_instance().get_image("empty.png");
+
+	Settings settings = world->get_settings();
+	int season = settings.current_season;
+	string name;
+
+	switch (season) {
+	case settings.SUMMER:
+		name = "summer.jpg";
+		break;
+
+	case settings.AUTUMN:
+		name = "autumn.jpg";
+		break;
+
+	case settings.SPRING:
+		name = "spring.jpg";
+		break;
+
+	case settings.WINTER:
+		name = "winter.jpg";
+	}
+
+	sf::Image im = ImageLoader::get_instance().get_image(name);
 	sf::Texture t;
 	t.loadFromImage(im);
 	s.setTexture(t);
 	s.setPosition(0, 0);
-	s.setScale(size, size);
+
+	s.setScale(WINDOW_WIDTH / s.getLocalBounds().width, WINDOW_HEIGHT / s.getLocalBounds().height);
 	target.draw(s, states);
+
 	// Отрисовка поля всего
 	for (int i = 0; i < this->world->size(); ++i) {
 
@@ -90,9 +115,7 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 				s.setPosition(i * size, j * size);
 				s.setScale(size / s.getLocalBounds().width, size / s.getLocalBounds().height);
 				target.draw(s, states);
-
 			}
-
 		}
 	}
 	/*

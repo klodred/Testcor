@@ -17,7 +17,7 @@ class Settings {
 
 	int bias_const = 42;
 
-	int index_step_by_steal = 2, index_step_by_convert_to_food = 4, index_step_by_photosynthesis = 3;
+	int index_step_by_steal = 2, index_step_by_convert_to_food = 4;
 	int index_step_greater_than_bias = 4, index_step_lower_than_bias = 2, index_step_by_copy = 5;
 
 	double chance_mutation = 0.25;
@@ -73,5 +73,7 @@ class Settings {
 	int count_poison() { return rand() % (size_environment / 40 * size_environment); };
 
 	int count_heal() { return rand() % (size_environment / 40 * size_environment); };
+
+	int index_step_by_photosynthesis(int energy) { return energy % 10; };
 
 };
