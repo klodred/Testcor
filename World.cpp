@@ -82,4 +82,21 @@ void World::change_season() {
 	}
 }
 
+void World::save(std::ofstream& fout) {
+	vector<int> live_bots = environment.get_live_bots();
+	fout << settings.size_environment << "\n";
+	fout << settings.size_genome << "\n";
+	fout << settings.time_iteration << "\n";
+	fout << live_bots.size() << "\n";
+	fout << time << "\n";
+	fout << environment.get_current_bot() << "\n";
+
+	for (int i = 0; i < live_bots.size(); ++i) {
+
+
+	}
+	
+
+}
+
 

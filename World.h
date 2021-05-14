@@ -3,6 +3,8 @@
 #include "Command.h"
 #include <algorithm>
 #include "Settings.h"
+#include <iostream>
+#include <fstream>
 
 class World {
 private:
@@ -39,6 +41,8 @@ public:
 	Settings get_settings() const { return settings; }; // ?
 
 	void change_season();
+
+	void save(std::ofstream& fout);
 };
 
 

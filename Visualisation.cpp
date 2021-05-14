@@ -7,7 +7,7 @@ void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
 	window.setFramerateLimit(60);
 	sf::Event event;
-	Timer timer(100);
+	Timer timer(300);
 	while (window.isOpen())
 	{
 
@@ -45,16 +45,25 @@ void Controller::run() {
 	}
 }
 
-void SettingsModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void MenuModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
+	sf::Sprite s;
+	sf::Image im = ImageLoader::get_instance().get_image("menu.jpg");
+	sf::Texture t;
+	t.loadFromImage(im);
+	s.setTexture(t);
+	s.setPosition(0, 0);
+	s.setScale(WINDOW_WIDTH / s.getLocalBounds().width, WINDOW_HEIGHT / s.getLocalBounds().height);
+	target.draw(s, states);
+	
 	for (auto el : buttons) {
 
 		target.draw(el.second, states);
 
 	}
-
-
 }
+
+
 
 void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
@@ -131,7 +140,72 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 }
 
-GameModel* SettingsModel::process(sf::Event& event, sf::RenderWindow& window) {
+GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
+	
+	if (event.type == sf::Event::MouseButtonPressed) {
+
+		cout << "Зашли в обработку кнопок\n";
+		if (this->buttons["Run"].isMouseOver(window)) {
+
+			World* w = new World(this->settings);
+			GameModel* a = new WorldModel(w);
+			return a;
+		}
+
+		if (this->buttons["Exit"].isMouseOver(window)) {
+			
+			exit(0);
+		}
+	}
+
+	return this;
+	
+}
+
+MenuModel::MenuModel(Settings _set) : settings(_set) {
+	this->buttons["Menu"];
+	buttons["Menu"].setSize({ WINDOW_WIDTH / 2, WINDOW_HEIGHT / 15 });
+	buttons["Menu"].setPosition({ WINDOW_WIDTH / 4, WINDOW_HEIGHT / 10 });
+	buttons["Menu"].setColor(sf::Color(205, 205, 205));
+	this->buttons["Menu"].initText("Life Menu", "calibri.ttf", 20, sf::Color(255, 255, 255));
+
+	this->buttons["Run"];
+	buttons["Run"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
+	buttons["Run"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 4 });
+	buttons["Run"].setColor(sf::Color(255, 154, 154));
+	//this->buttons["Run"] = { { WINDOW_WIDTH / 2.5, WINDOW_HEIGHT / 10 },  sf::Color::White, {WINDOW_WIDTH / 3.5, WINDOW_HEIGHT / 7}};
+	this->buttons["Run"].initText("RUN", "calibri.ttf", 20, sf::Color(255, 255, 255));
+
+	this->buttons["Load"];
+	buttons["Load"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
+	buttons["Load"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2.7 });
+	buttons["Load"].setColor(sf::Color(255, 154, 154));
+	this->buttons["Load"].initText("LOAD", "calibri.ttf", 20, sf::Color(255, 255, 255));
+
+	this->buttons["Settings"];
+	buttons["Settings"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
+	buttons["Settings"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2.05 });
+	buttons["Settings"].setColor(sf::Color(255, 154, 154));
+	this->buttons["Settings"].initText("SETTINGS", "calibri.ttf", 20, sf::Color(255, 255, 255));
+	
+	this->buttons["Exit"];
+	buttons["Exit"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
+	buttons["Exit"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 1.65 });
+	buttons["Exit"].setColor(sf::Color(255, 154, 154));
+	this->buttons["Exit"].initText("EXIT", "calibri.ttf", 20, sf::Color(255, 255, 255));
+	
+}
+
+/*
+MenuModel::MenuModel() {
+	this->buttons["Run"] = { "Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black };
+	Button button("Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black);
+	buttons.insert(std::pair<std::string, Button>("Run", button));
+}
+*/
+
+/*
+GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 	if (event.type == sf::Event::MouseButtonPressed) {
 
 		cout << "Зашли в обработку кнопок\n";
@@ -146,13 +220,8 @@ GameModel* SettingsModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 	return this;
 }
+*/
 
-SettingsModel::SettingsModel(Settings _set) : settings(_set) {
-	this->buttons["Run"] = { "Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black };
-	Button button("Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black);
-	buttons.insert(std::pair<std::string, Button>("Run", button));
-
-}
 
 void WorldModel::run() {
 

@@ -6,9 +6,11 @@ static const int DEBUG = 1;
 class Settings {
 	public:
 	int size_environment;
+	int size_genome;
+	int time_iteration;
 	int count_bots;
 	int start_energy;
-	enum season { SUMMER = 100, AUTUMN = SUMMER + 100, SPRING = AUTUMN + 100, WINTER = SPRING + 100 };
+	enum season { SUMMER = 10, AUTUMN = SUMMER + 10, SPRING = AUTUMN + 10, WINTER = SPRING + 10 };
 
 	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -2, lost_energy_by_swap_minerals = -10;
 	int lost_energy_by_eat_bot = -5;
@@ -23,6 +25,8 @@ class Settings {
 	double chance_mutation = 0.25;
 
 	int time_for_generation_resource = 100;
+
+	int set_time_iteration(int time) { time_iteration = time; }
 
 	int current_season = SUMMER;
 
