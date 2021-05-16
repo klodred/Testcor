@@ -2,10 +2,12 @@
 
 void World::iteration_world() {
 
+	int current_bot = environment.get_index_current_bot_from_live_bots();
 	int count = this->environment.get_count_live_bots();
 	vector<int>* live_bots = this->environment.get_accses_to_live_bots();
+	int i;
 
-	for (int i = 0; i < count; ++i) {
+	for (i = current_bot; i < count; ++i) {
 
 		std::pair<int, int> coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
 		int one_dim = environment.get_matrix().one_dimensional_index(coordinates.first, coordinates.second);
@@ -37,6 +39,12 @@ void World::iteration_world() {
 		}
 	}
 
+	environment.set_index_current_bot_from_live_bots(i % count);
+	std::string file_name = "write.txt";
+	std::ofstream fout;
+	fout.open(file_name);
+	this->save(fout);
+	exit(0);
 	sort(live_bots->begin(), live_bots->end());
 
 	if (this->environment.get_count_die_bots() != 0) {
@@ -82,21 +90,58 @@ void World::change_season() {
 	}
 }
 
-void World::save(std::ofstream& fout) {
+void World::save(std::ofstream& fout) const {
 	vector<int> live_bots = environment.get_live_bots();
+	Matrix<Entity*> matr = environment.get_matrix();
 	fout << settings.size_environment << "\n";
 	fout << settings.size_genome << "\n";
 	fout << settings.time_iteration << "\n";
 	fout << live_bots.size() << "\n";
 	fout << time << "\n";
-	fout << environment.get_current_bot() << "\n";
+	fout << environment.get_index_current_bot_from_live_bots() << "\n\n";
 
 	for (int i = 0; i < live_bots.size(); ++i) {
 
+		fout << live_bots[i] << "\n";
+		fout << ((Bot*)matr(live_bots[i]))->get_energy() << "\n";
+		fout << ((Bot*)matr(live_bots[i]))->get_minerals() << "\n";
+		fout << ((Bot*)matr(live_bots[i]))->get_index_step() << "\n";
 
+		Matrix<int> genome = ((Bot*)matr(live_bots[i]))->get_genome();
+
+		for (int j = 0; j < settings.size_genome; ++j)
+			fout << genome(j) << " ";
+
+		fout << "\n\n";
 	}
-	
 
+	std::ios::pos_type pos = fout.tellp();
+	fout << "\n\n\n";
+	int count = 0;
+
+	for (int i = 0; i < settings.size_environment * settings.size_environment; ++i) {
+
+		if (!matr(i)->is_empty()) {
+
+			if (matr(i)->is_health() or matr(i)->is_poison()) {
+
+				fout << i << "\n" << ((Nutrition*)matr(i))->get_heal() << "\n\n";
+				++count;
+			}
+
+			else {
+
+				if (matr(i)->is_wall()) {
+
+					fout << i << "\n" << 0 << "\n\n";
+					++count;
+				}
+			}
+		}
+	}
+
+	fout.seekp(pos);
+	fout << count;
 }
 
 

@@ -8,6 +8,7 @@ void Controller::run() {
 	window.setFramerateLimit(60);
 	sf::Event event;
 	Timer timer(300);
+
 	while (window.isOpen())
 	{
 

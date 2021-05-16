@@ -5,6 +5,7 @@
 #include "Settings.h"
 #include <iostream>
 #include <fstream>
+#include <ios>
 
 class World {
 private:
@@ -42,7 +43,7 @@ public:
 
 	void change_season();
 
-	void save(std::ofstream& fout);
+	void save(std::ofstream& fout) const;
 };
 
 

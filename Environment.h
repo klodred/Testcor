@@ -6,7 +6,7 @@ private:
 	Matrix<Entity*> matrix;
 	vector<int> live_bots;
 	vector<int> die_bots;
-	int current_bot;
+	int index_current_bot_from_live_bots = 0;
 
 public:
 	Environment() { };
@@ -75,5 +75,7 @@ public:
 
 	bool is_bot_die(int index) { return find(die_bots.begin(), die_bots.end(), index) != die_bots.end(); };
 
-	int get_current_bot() { return current_bot; };
+	int get_index_current_bot_from_live_bots() const { return index_current_bot_from_live_bots; };
+
+	void set_index_current_bot_from_live_bots(int index) { index_current_bot_from_live_bots = index; };
 };

@@ -5,8 +5,8 @@ static const int DEBUG = 1;
 
 class Settings {
 	public:
-	int size_environment;
-	int size_genome;
+	int size_environment = 60;
+	int size_genome = 64;
 	int time_iteration;
 	int count_bots;
 	int start_energy;

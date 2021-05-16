@@ -11,7 +11,7 @@ enum commands {
 };
 
 static enum {SUN, MINERALS, MEAT, MIXED};
-static const int SIZE_GENOME = 8, MAX_COMMAND = 63;
+static const int SIZE_GENOME = 64, MAX_COMMAND = 63;
 
 class Form {
 	sf::Image s;
