@@ -1,7 +1,7 @@
 #pragma once
 #include "Entity.h"
 static const int ENVIRONMENT_HEIGHT = 60, ENVIRONMENT_WIDTH = 60;
-static const int DEBUG = 1;
+static const int DEBUG = 0;
 
 class Settings {
 	public:

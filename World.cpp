@@ -40,11 +40,11 @@ void World::iteration_world() {
 	}
 
 	environment.set_index_current_bot_from_live_bots(i % count);
-	std::string file_name = "write.txt";
-	std::ofstream fout;
-	fout.open(file_name);
-	this->save(fout);
-	exit(0);
+	//std::string file_name = "write.txt";
+	//std::ofstream fout;
+	//fout.open(file_name);
+	//this->save(fout);
+	//exit(0);
 	sort(live_bots->begin(), live_bots->end());
 
 	if (this->environment.get_count_die_bots() != 0) {
@@ -142,6 +142,68 @@ void World::save(std::ofstream& fout) const {
 
 	fout.seekp(pos);
 	fout << count;
+}
+
+void World::load(std::istream& fcin) {
+	vector<int>* live_bots = environment.get_accses_to_live_bots();
+	Matrix<Entity*>* matr = environment.get_access_to_matrix();
+	fcin >> settings.size_environment;
+	matr->resize(settings.size_environment, settings.size_environment);
+
+	fcin >> settings.size_genome;
+	fcin >> settings.time_iteration;
+
+	int count;
+	fcin >> count;
+
+	live_bots->resize(count);
+
+	fcin >> time;
+
+	int index;
+	fcin >> index;
+	environment.set_index_current_bot_from_live_bots(index);
+
+	for (int i = 0; i < live_bots->size(); ++i) {
+
+		fcin >> (*live_bots)[i];
+
+		int energy;
+		fcin >> energy;
+		((Bot*)(*matr)((*live_bots)[i]))->set_energy(energy);
+
+		fcin >> energy;
+		((Bot*)(*matr)((*live_bots)[i]))->set_minerals(energy);
+
+		fcin >> index;
+		((Bot*)(*matr)((*live_bots)[i]))->set_index_step(index);
+
+		vector<int> genome(settings.size_genome);
+
+		for (int j = 0; j < settings.size_genome; ++j)
+			fcin >> genome[j];
+	}
+
+	int count_resource, pos, damage;
+	fcin >> count_resource;
+
+	for (int i = 0; i < count_resource; ++i) {
+
+		fcin >> pos;
+		fcin >> damage;
+
+		if (damage > 0)
+			environment.set_entity(pos, new Health(damage));
+
+		else {
+
+			if (damage < 0)
+				environment.set_entity(pos, new Poison(damage));
+
+			else
+				environment.set_entity(pos, new Wall());
+		}
+	}
 }
 
 

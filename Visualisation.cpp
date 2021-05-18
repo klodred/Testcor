@@ -153,6 +153,16 @@ GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 			return a;
 		}
 
+		if (this->buttons["Load"].isMouseOver(window)) {
+
+			World* w = new World();
+			std::string file_name = "write.txt";
+			std::ifstream fcin;
+			fcin.open(file_name);
+			w->load(fcin);
+			GameModel* a = new WorldModel(w);
+		}
+
 		if (this->buttons["Exit"].isMouseOver(window)) {
 			
 			exit(0);

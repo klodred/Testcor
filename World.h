@@ -15,6 +15,7 @@ private:
 	int time;
 
 public:
+	World() { settings = Settings(); environment = Environment(); command = Command(&environment, &settings); };
 
 	World(Settings _settings) {
 		cout << &this->environment << "\n";
@@ -44,6 +45,8 @@ public:
 	void change_season();
 
 	void save(std::ofstream& fout) const;
+
+	void load(std::istream& fcin);
 };
 
 

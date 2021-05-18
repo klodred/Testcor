@@ -84,7 +84,6 @@ public:
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window) = 0;
 
 	virtual void run() {};
-
 };
 
 /*
@@ -105,7 +104,6 @@ public:
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window) { return this; };
 
 	virtual void run();
-
 };
 
 class MenuModel : public GameModel {

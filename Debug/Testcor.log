@@ -1,9 +1,87 @@
-﻿  World.cpp
+﻿  Command.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+  Entity.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Entity.cpp(80,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Environment.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Environment.cpp(40,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Settings.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Settings.cpp(80,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Visualisation.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Visualisation.h(51,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.h(62,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(63,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(125,31): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.cpp(125,21): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.cpp(185,70): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(192,73): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(198,78): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(204,74): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+  World.cpp
 D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
 D:\file\si\OOP\Testcor\World.cpp(103,20): warning C4018: <: несоответствие типов со знаком и без знака
-D:\file\si\OOP\Testcor\Matrix.h(116): warning C4715: Matrix<Entity *>::two_dimensional_index: значение возвращается не при всех путях выполнения
-D:\file\si\OOP\Testcor\Matrix.h(98): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\World.cpp(167,20): warning C4018: <: несоответствие типов со знаком и без знака
+  main.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Visualisation.h(51,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.h(62,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(63,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\main.cpp(6,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода...
 D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
 D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<int>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(98): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(116): warning C4715: Matrix<Entity *>::two_dimensional_index: значение возвращается не при всех путях выполнения
 D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<int>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(58): warning C4715: Settings::lost_energy_by_step: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(41): warning C4715: Settings::index_step: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(75): warning C4715: Settings::energy_by_photosynthesis: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(24): warning C4715: Settings::direction_identifier: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Environment.cpp(81): warning C4715: Environment::nearest_empty_cell: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(98): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Entity.cpp(74): warning C4715: Bot::get_form: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<int>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Command.cpp(364): warning C4715: Command::process_direction: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<int>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(108): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
   Testcor.vcxproj -> D:\file\si\OOP\Testcor\Debug\Testcor.exe
