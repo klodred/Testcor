@@ -15,6 +15,8 @@ void Environment::populate(int count) {
 			this->live_bots.push_back(pos);
 		}
 	}
+
+	count_live_bots = count;
 }
 
 void Environment::kill_bot(int i, int j) {

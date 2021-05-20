@@ -55,7 +55,7 @@ public:
 class Bot : public Entity {
 private:
 	int index_step;
-	Matrix<int> genome;
+	vector<int> genome;
 	int energy;
 	int minerals;
 	int type;
@@ -63,7 +63,7 @@ private:
 public:
 	Bot();
 
-	Bot(int step, const Matrix<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
+	Bot(int step, const vector<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
 	virtual Form get_form();
 
@@ -75,9 +75,9 @@ public:
 
 	int get_minerals() const { return minerals; };
 
-	Matrix<int> get_genome() const { return genome; };
+	vector<int> get_genome() const { return genome; };
 
-	void set_genome(Matrix<int> _genome) { genome = _genome; };
+	void set_genome(vector<int> _genome) { genome = _genome; };
 
 	virtual bool is_bot() const { return true; };
 
@@ -97,13 +97,18 @@ public:
 
 	void set_minerals(int _minerals) { minerals = _minerals; };
 
-	void enlarge_index_step(int add) { this->index_step  = (index_step + add) % (genome.size_m() * genome.size_n()); };
+	void enlarge_index_step(int add) { 
+		int size = genome.size();
+		this->index_step  = (index_step + add) % (genome.size());
+	};
 
 	bool is_die() { return energy <= 0; };
 
 	int define_the_type();
 
 	void set_type(int _type) { this->type = _type; };
+
+	void rand_genome(int size, int left, int right);
 };
 
 class Wall : public Entity {

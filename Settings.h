@@ -7,7 +7,7 @@ class Settings {
 	public:
 	int size_environment = 60;
 	int size_genome = 64;
-	int time_iteration;
+	int time_iteration = 300;
 	int count_bots;
 	int start_energy;
 	enum season { SUMMER = 10, AUTUMN = SUMMER + 10, SPRING = AUTUMN + 10, WINTER = SPRING + 10 };

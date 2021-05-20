@@ -1,7 +1,8 @@
 #include "Entity.h"
 
 Bot::Bot() {
-	this->genome.random(SIZE_GENOME, 0, MAX_COMMAND);
+	this->genome.resize(SIZE_GENOME);
+	this->rand_genome(SIZE_GENOME, 0, MAX_COMMAND);
 	this->energy = 20;
 	this->index_step = 0;
 	this->type = define_the_type();
@@ -12,17 +13,17 @@ int Bot::define_the_type() {
 
 	for (int i = 0; i < genome.size(); ++i) {
 
-		if (genome(i) > STEAL and genome(i) < MOVE)
+		if (genome[i] > STEAL and genome[i] < MOVE)
 			++sun;
 
 		else {
 
-			if (genome(i) > COPY and genome(i) < EAT_BOT)
+			if (genome[i] > COPY and genome[i] < EAT_BOT)
 				++minerals;
 
 			else {
 
-				if (genome(i) > SWAP_MINERALS and genome(i) < CHECK_ENERGY)
+				if (genome[i] > SWAP_MINERALS and genome[i] < CHECK_ENERGY)
 					++meat;
 			}
 
@@ -87,4 +88,9 @@ int index_max(vector<int> vec) {
 	}
 
 	return index;
+}
+
+void Bot::rand_genome(int size, int left, int right) {
+	for (int i = 0; i < size; ++i)
+		genome[i] = rand() % right + left;
 }

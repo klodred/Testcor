@@ -7,6 +7,7 @@ private:
 	vector<int> live_bots;
 	vector<int> die_bots;
 	int index_current_bot_from_live_bots = 0;
+	int count_live_bots;
 
 public:
 	Environment() { };
@@ -25,7 +26,11 @@ public:
 
 	Bot get_bot(int i, int j) { return *((Bot*)matrix(i, j)); };
 
-	int get_count_live_bots() { return this->live_bots.size(); };
+	void set_count_live_bots(int count) { count_live_bots = count; };
+
+	int get_count_live_bots() const { return count_live_bots; };
+
+	//int get_size_live_bots() { return this->live_bots.size(); };
 
 	int get_count_die_bots() const { return this->die_bots.size(); };
 

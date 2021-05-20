@@ -6,7 +6,7 @@ int main() {
 	srand(time(0));
 	Settings settings;
 	GameModel* model = new MenuModel(settings);
-	Controller control(model);
+	Controller control(model, settings);
 	control.run();
 	return 0;
 }

@@ -7,7 +7,7 @@
 void Command::process_command(int i, int j) {
 	Matrix<Entity*>* matr = environment->get_access_to_matrix();
 	int index = ((Bot*)(*matr)(i, j))->get_index_step();
-	int step = ((Bot*)(*matr)(i, j))->get_genome()(index);
+	int step = ((Bot*)(*matr)(i, j))->get_genome()[index];
 	// if max then copy this
 	if (DEBUG) {
 		cout << "команда " << step << "\n";
@@ -118,8 +118,10 @@ void Command::steal(int i, int j) {
 void Command::look(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
-	Matrix<int> genome = ((Bot*)matrix(i, j))->get_genome();
-	int direction = genome.value_next_cell(i, j) % 8;
+	vector<int> genome = ((Bot*)matrix(i, j))->get_genome();
+	//int direction = .value_next_cell(i, j) % 8;
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
@@ -176,7 +178,10 @@ void Command::move(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
-	int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	vector<int> genome = bot->get_genome();
+	//int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
 	
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
@@ -205,7 +210,10 @@ void Command::eat(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
-	int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	//int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	vector<int> genome = bot->get_genome();
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
@@ -237,10 +245,10 @@ void Command::copy(int i, int j) {
 
 	if (chance_mutation <= settings->chance_mutation) {
 
-		int position_in_genome = rand() % a->get_genome().size_m() * a->get_genome().size_n();
+		int position_in_genome = rand() % a->get_genome().size();
 		int command = rand() % MAX_COMMAND;
-		Matrix<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
-		genome(position_in_genome) = command;
+		vector<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
+		genome[position_in_genome] = command;
 		a->set_genome(genome);
 		a->set_type(a->define_the_type());
 	}
@@ -280,7 +288,10 @@ void Command::eat_bot(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
-	int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	//int direction = bot->get_genome().value_next_cell(i, j) % 8;
+	vector<int> genome = bot->get_genome();
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
 	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
 
 	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;

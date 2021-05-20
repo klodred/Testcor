@@ -7,7 +7,8 @@ void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
 	window.setFramerateLimit(60);
 	sf::Event event;
-	Timer timer(300);
+	//Timer timer((MenuModel*)game.)
+	Timer timer(settings.time_iteration);
 
 	while (window.isOpen())
 	{
@@ -26,6 +27,7 @@ void Controller::run() {
 			game = game->process(event, window);
 
 		}
+
 		if (timer.is_ready()) {
 
 			game->run();
@@ -64,7 +66,44 @@ void MenuModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	}
 }
 
+WorldModel::WorldModel(World* w) : world(w) {
+	this->buttons["Save"];
+	buttons["Save"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 20 });
+	buttons["Save"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 20, WINDOW_HEIGHT / 20 });
+	buttons["Save"].setColor(sf::Color::Black);
+	this->buttons["Save"].initText("Save", "calibri.ttf", 20, sf::Color(255, 255, 255));
+	buttons["Save"].setOutlineThickness(2.f);
+	buttons["Save"].setOutlineColor(sf::Color::White);
 
+	this->buttons["New"];
+	buttons["New"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 20 });
+	buttons["New"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2, WINDOW_HEIGHT / 20 });
+	buttons["New"].setColor(sf::Color::Black);
+	this->buttons["New"].initText("New", "calibri.ttf", 20, sf::Color(255, 255, 255));
+	buttons["New"].setOutlineThickness(2.f);
+	buttons["New"].setOutlineColor(sf::Color::White);
+
+	labels["FileName"];
+	sf::Font* font = new sf::Font;
+	font->loadFromFile("calibri.ttf");
+	labels["FileName"].setFont(*font);
+	labels["FileName"].setString("File name: ");
+	labels["FileName"].setFillColor(sf::Color::White);
+	labels["FileName"].setCharacterSize(17);
+	labels["FileName"].setPosition({(WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 7.5});
+
+	textField["FileName"];
+	textField["FileName"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 25 });
+	//textField["FileName"].setFont(*font);
+	textField["FileName"].setFillColor(sf::Color::White);
+	//textField["FileName"].setCharacterSize(17);
+	textField["FileName"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 4, WINDOW_HEIGHT / 7.5 });
+	textField["FileName"].setOutlineThickness(5);
+	textField["FileName"].setOutlineColor(sf::Color(127, 127, 127));
+	textField["FileName"].initText("calibri.ttf");
+
+
+}
 
 void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
@@ -75,8 +114,24 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	}
 
 	states.transform *= getTransform();
+
+	for (auto el : buttons) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : labels) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : textField) {
+
+		target.draw(el.second, states);
+	}
+
 	Matrix<Entity*> a = world->get_matrix();
-	int size = WINDOW_WIDTH / this->world->size();
+	int size = WORLD_WIDTH / this->world->size();
 	sf::Sprite s;
 	Form form;
 
@@ -105,9 +160,9 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	sf::Texture t;
 	t.loadFromImage(im);
 	s.setTexture(t);
-	s.setPosition(0, 0);
+	s.setPosition(WINDOW_WIDTH - WORLD_WIDTH, 0);
 
-	s.setScale(WINDOW_WIDTH / s.getLocalBounds().width, WINDOW_HEIGHT / s.getLocalBounds().height);
+	s.setScale(WORLD_WIDTH / s.getLocalBounds().width, WORLD_HEIGHT / s.getLocalBounds().height);
 	target.draw(s, states);
 
 	// Отрисовка поля всего
@@ -122,7 +177,7 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 				sf::Texture t;
 				t.loadFromImage(im);
 				s.setTexture(t);
-				s.setPosition(i * size, j * size);
+				s.setPosition(i * size + WINDOW_WIDTH - WORLD_WIDTH, j * size);
 				s.setScale(size / s.getLocalBounds().width, size / s.getLocalBounds().height);
 				target.draw(s, states);
 			}
@@ -141,6 +196,44 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 }
 
+GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
+
+	if (event.type == sf::Event::MouseButtonPressed) {
+
+		//cout << "Зашли в обработку кнопок\n";
+		this->textField["FileName"].setFocus(false);
+
+		if (this->buttons["New"].isMouseOver(window)) {
+
+			World* w = new World(this->world->get_settings());
+			GameModel* a = new WorldModel(w);
+			return a;
+		}
+
+		if (this->buttons["Save"].isMouseOver(window)) {
+
+			World* w = new World();
+			std::string file_name = "write.txt";
+			std::ifstream fcin;
+			fcin.open(file_name);
+			w->load(fcin);
+			GameModel* a = new WorldModel(w);
+			return a;
+		}
+
+		if (this->textField["FileName"].isMouseOver(window)) {
+			cout << "Зашли";
+			this->textField["FileName"].setFocus(true);
+		}
+
+		else {
+			this->textField["FileName"].handleInput(event);
+		}
+	}
+
+	return this;
+
+}
 GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 	
 	if (event.type == sf::Event::MouseButtonPressed) {
@@ -161,6 +254,7 @@ GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 			fcin.open(file_name);
 			w->load(fcin);
 			GameModel* a = new WorldModel(w);
+			return a;
 		}
 
 		if (this->buttons["Exit"].isMouseOver(window)) {
