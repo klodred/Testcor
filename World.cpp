@@ -14,7 +14,7 @@ void World::iteration_world() {
 		std::pair<int, int> coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
 		int one_dim = environment.get_matrix().one_dimensional_index(coordinates.first, coordinates.second);
 
-		if (!environment.get_access_to_bot({ coordinates.first, coordinates.second })->is_die()) {
+		if ((environment.get_matrix()(one_dim)->is_bot()) && (!environment.get_access_to_bot({ coordinates.first, coordinates.second })->is_die())) {
 
 			if (DEBUG) {
 				if (environment.get_matrix()(one_dim)->is_bot())

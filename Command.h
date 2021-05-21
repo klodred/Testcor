@@ -5,7 +5,7 @@
 class Command {
 private:
 	Environment* environment;
-	Settings* settings;
+	SettingsS* settings;
 
 public:
 

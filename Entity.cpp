@@ -3,7 +3,7 @@
 Bot::Bot() {
 	this->genome.resize(SIZE_GENOME);
 	this->rand_genome(SIZE_GENOME, 0, MAX_COMMAND);
-	this->energy = 20;
+	this->energy = 100;
 	this->index_step = 0;
 	this->type = define_the_type();
 }

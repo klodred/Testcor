@@ -263,8 +263,18 @@ void Command::copy(int i, int j) {
 
 	std::pair<int, int> position_in_environment = environment->nearest_empty_cell(i, j);
 	environment->set_entity(position_in_environment, a);
+	
+	//
+	int test = matr->one_dimensional_index(position_in_environment);
+	if (test < 0) {
 
-	environment->get_accses_to_live_bots()->push_back(matr->one_dimensional_index(position_in_environment));
+		cout << "Copy";
+			throw 1;
+
+	}
+	//
+
+	environment->get_accses_to_live_bots()->push_back(test);
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_copy);
 }
 
@@ -349,27 +359,18 @@ std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 		return { (i + 1) % m, j };
 
 	case 4:
-		return j - 1 < 0 ? std::pair<int, int> {(i + 1) % m, n - 1} : std::pair<int, int>{ (i + 1) % m, j - 1 };
+		return std::pair<int, int> {(i + 1) % m, (j - 1 + n) % n};
 
 	case 5:
-		return j - 1 < 0 ? std::pair<int, int> {i, n - 1} : std::pair<int, int>{ i, j - 1 };
+		return { i, (j - 1 + n) % n };
 
 	case 6: 
-		if (j - 1 < 0) {
-
-			if (i - 1 < 0)
-				return { m - 1, n - 1 };
-			else
-				return { i - 1, n - 1 };
-		}
-
-		else
-			return { i - 1, j - 1 };
+		return { (i - 1 + m) % m, (j - 1 + n) % n };
 
 	case 7:
-		return i - 1 < 0 ? std::pair<int, int> {m - 1, j} : std::pair<int, int>{ i - 1, j };
+		return { (i - 1 + m) % m, j};
 
 	case 0:
-		return i - 1 < 0 ? std::pair<int, int> {m - 1, (j + 1) % n} : std::pair<int, int>{ i - 1, (j + 1) % n };
+		return { (i - 1 + m) % m, (j + 1 + n) % n };
 	}
 }

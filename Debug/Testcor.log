@@ -1,64 +1,7 @@
-﻿  Visualisation.cpp
+﻿  Environment.cpp
 D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
-D:\file\si\OOP\Testcor\Visualisation.h(46,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-D:\file\si\OOP\Testcor\Visualisation.h(57,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
-          with
-          [
-              T=int
-          ]
-D:\file\si\OOP\Testcor\Visualisation.h(58,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
-          with
-          [
-              T=int
-          ]
-D:\file\si\OOP\Testcor\Visualisation.h(154,24): warning C4018: <: несоответствие типов со знаком и без знака
-D:\file\si\OOP\Testcor\Visualisation.cpp(93,89): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-D:\file\si\OOP\Testcor\Visualisation.cpp(100,93): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-D:\file\si\OOP\Testcor\Visualisation.cpp(180,60): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\file\si\OOP\Testcor\Visualisation.cpp(180,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\file\si\OOP\Testcor\Visualisation.cpp(279,70): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-D:\file\si\OOP\Testcor\Visualisation.cpp(286,73): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-D:\file\si\OOP\Testcor\Visualisation.cpp(292,78): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-D:\file\si\OOP\Testcor\Visualisation.cpp(298,74): warning C4305: аргумент: усечение из "double" в "T"
-          with
-          [
-              T=float
-          ]
-  main.cpp
-D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
-D:\file\si\OOP\Testcor\Visualisation.h(46,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-D:\file\si\OOP\Testcor\Visualisation.h(57,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
-          with
-          [
-              T=int
-          ]
-D:\file\si\OOP\Testcor\Visualisation.h(58,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
-          with
-          [
-              T=int
-          ]
-D:\file\si\OOP\Testcor\Visualisation.h(154,24): warning C4018: <: несоответствие типов со знаком и без знака
-D:\file\si\OOP\Testcor\main.cpp(6,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-  Создание кода...
+D:\file\si\OOP\Testcor\Environment.cpp(42,20): warning C4018: <: несоответствие типов со знаком и без знака
 D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(98): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
   Testcor.vcxproj -> D:\file\si\OOP\Testcor\Debug\Testcor.exe

@@ -3,8 +3,8 @@
 #include "World.h"
 #include <map>
 
-static const int WINDOW_WIDTH = 1100, WINDOW_HEIGHT = 800;
-static const int WORLD_WIDTH = 700, WORLD_HEIGHT = 800;
+static const int WINDOW_WIDTH = 1200, WINDOW_HEIGHT = 800;
+static const int WORLD_WIDTH = 800, WORLD_HEIGHT = 800;
 
 class Button : public sf::Drawable, sf::Transformable {
 private:
@@ -78,12 +78,13 @@ private:
 	sf::Vector2f pos;
 	sf::Font *font;
 	std::string text;
+	sf::Text* _text;
 	sf::RectangleShape shape;
 	sf::Color color;
 	bool hasFocus = false;
 
 public:
-	TextEdit() {};
+	TextEdit() { maxChars = 30; _text = new sf::Text; };
 
 	TextEdit(sf::Vector2f _size, sf::Color bgColor, sf::Vector2f _pos, int max) : size(_size), pos(_pos), maxChars(max) {
 		shape.setFillColor(bgColor);
@@ -98,9 +99,13 @@ public:
 
 	void setOutlineColor(sf::Color _color) { shape.setOutlineColor(_color); };
 
-	void initText(string name) {
+	void initText(string name, int sizeChars, sf::Color _color) {
 		font = new sf::Font;
 		font->loadFromFile(name);
+		_text->setFont(*font);
+		_text->setCharacterSize(sizeChars);
+		_text->setPosition(pos.x, pos.y + 3);
+		_text->setFillColor(_color);
 	}
 
 	const std::string getText() const {
@@ -112,12 +117,14 @@ public:
 		shape.setPosition(x, y);
 	}
 
+	bool getFocus() { return hasFocus; };
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 		states.transform *= getTransform();
 		target.draw(shape);
-		//target.draw(*text);
+		_text->setString(text);
+		target.draw(*_text);
 	}
 
 	bool contains(sf::Vector2f point) const {
@@ -129,7 +136,6 @@ public:
 
 		if (focus) {
 			shape.setOutlineColor(sf::Color::Blue);
-			cout << "Установили синие границы";
 		}
 
 		else {
@@ -144,9 +150,10 @@ public:
 
 	
 	void handleInput(sf::Event e) {
-		if (!hasFocus || e.type != sf::Event::TextEntered)
+		if (!hasFocus || e.type != sf::Event::TextEntered) {
 			return;
-
+		}
+			
 		if (e.text.unicode == 8) {   // Delete key
 			text = text.substr(0, text.size() - 1);
 		}
@@ -155,8 +162,6 @@ public:
 			text += e.text.unicode;
 		}
 	}
-	
-	
 	
 	void setSize(sf::Vector2f _size) { size = _size; shape.setSize(size); };
 
@@ -186,9 +191,11 @@ public:
 class WorldModel : public GameModel {
 private:
 	World* world;
+	std::string fileName;
 	std::map<std::string, Button> buttons;
 	std::map<std::string, sf::Text> labels;
 	std::map<std::string, TextEdit> textField;
+	std::map<std::string, sf::RectangleShape> shapes;
 
 public:
 	WorldModel(World* w);

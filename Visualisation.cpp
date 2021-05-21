@@ -22,6 +22,28 @@ void Controller::run() {
 			{
 				// Получаем нажатую клавишу - выполняем соответствующее действие
 				if (event.key.code == sf::Keyboard::Escape) window.close();
+
+				if (event.key.code == sf::Keyboard::Right) {
+
+					settings.time_iteration = settings.time_iteration / 2;
+					timer = Timer(settings.time_iteration);
+
+				}
+
+				if (event.key.code == sf::Keyboard::Left) {
+
+					settings.time_iteration = (settings.time_iteration + 1) * 2;
+					timer = Timer(settings.time_iteration);
+
+				} 
+
+				if (event.key.code == sf::Keyboard::N) {
+
+					World* w = new World(settings);
+					game = new WorldModel(w);
+
+				}
+
 			}
 
 			game = game->process(event, window);
@@ -92,17 +114,100 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["FileName"].setCharacterSize(17);
 	labels["FileName"].setPosition({(WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 7.5});
 
+	labels["Settings"];
+	font->loadFromFile("calibri.ttf");
+	labels["Settings"].setFont(*font);
+	labels["Settings"].setString("Settings: ");
+	labels["Settings"].setFillColor(sf::Color::White);
+	labels["Settings"].setCharacterSize(17);
+	labels["Settings"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.7, WINDOW_HEIGHT / 5 });
+
+	labels["SimulateSpeed"];
+	font->loadFromFile("calibri.ttf");
+	labels["SimulateSpeed"].setFont(*font);
+	labels["SimulateSpeed"].setString("Simulation Speed: ");
+	labels["SimulateSpeed"].setFillColor(sf::Color::White);
+	labels["SimulateSpeed"].setCharacterSize(17);
+	labels["SimulateSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 4.2 });
+
+	textField["SimulateSpeed"];
+	textField["SimulateSpeed"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 7, WINDOW_HEIGHT / 30 });
+	textField["SimulateSpeed"].setFillColor(sf::Color::White);
+	textField["SimulateSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.4, WINDOW_HEIGHT / 4.2 });
+	textField["SimulateSpeed"].setOutlineThickness(5);
+	textField["SimulateSpeed"].setOutlineColor(sf::Color(127, 127, 127));
+	textField["SimulateSpeed"].initText("calibri.ttf", 17, sf::Color::Black);
+
+	labels["ResourceSpeed"];
+	font->loadFromFile("calibri.ttf");
+	labels["ResourceSpeed"].setFont(*font);
+	labels["ResourceSpeed"].setString("Resource Speed: ");
+	labels["ResourceSpeed"].setFillColor(sf::Color::White);
+	labels["ResourceSpeed"].setCharacterSize(17);
+	labels["ResourceSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 3.2 });
+
+	textField["ResourceSpeed"];
+	textField["ResourceSpeed"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 7, WINDOW_HEIGHT / 30 });
+	textField["ResourceSpeed"].setFillColor(sf::Color::White);
+	textField["ResourceSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.4, WINDOW_HEIGHT / 3.2 });
+	textField["ResourceSpeed"].setOutlineThickness(5);
+	textField["ResourceSpeed"].setOutlineColor(sf::Color(127, 127, 127));
+	textField["ResourceSpeed"].initText("calibri.ttf", 17, sf::Color::Black);
+
+	this->buttons["Apply2"];
+	buttons["Apply2"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3.2, WINDOW_HEIGHT / 10 });
+	buttons["Apply2"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.55, WINDOW_HEIGHT / 4.3 });
+	buttons["Apply2"].setColor(sf::Color::Black);
+	this->buttons["Apply2"].initText("Apply", "calibri.ttf", 17, sf::Color(255, 255, 255));
+	buttons["Apply2"].setOutlineThickness(2.f);
+	buttons["Apply2"].setOutlineColor(sf::Color::White);
+
+	labels["Info"];
+	font->loadFromFile("calibri.ttf");
+	labels["Info"].setFont(*font);
+	labels["Info"].setString("Info: ");
+	labels["Info"].setFillColor(sf::Color::White);
+	labels["Info"].setCharacterSize(17);
+	labels["Info"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.5, WINDOW_HEIGHT / 2.65 });
+
+	/*
+	this->buttons["Apply2"];
+	buttons["Apply2"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 6, WINDOW_HEIGHT / 25 });
+	buttons["Apply2"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.5, WINDOW_HEIGHT / 5.4 });
+	buttons["Apply2"].setColor(sf::Color::Black);
+	this->buttons["Apply2"].initText("Apply", "calibri.ttf", 17, sf::Color(255, 255, 255));
+	buttons["Apply2"].setOutlineThickness(2.f);
+	buttons["Apply2"].setOutlineColor(sf::Color::White);
+	*/
+
 	textField["FileName"];
 	textField["FileName"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 25 });
-	//textField["FileName"].setFont(*font);
 	textField["FileName"].setFillColor(sf::Color::White);
-	//textField["FileName"].setCharacterSize(17);
 	textField["FileName"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 4, WINDOW_HEIGHT / 7.5 });
 	textField["FileName"].setOutlineThickness(5);
 	textField["FileName"].setOutlineColor(sf::Color(127, 127, 127));
-	textField["FileName"].initText("calibri.ttf");
+	textField["FileName"].initText("calibri.ttf", 17, sf::Color::Black);
 
+	this->buttons["Apply1"];
+	buttons["Apply1"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 6, WINDOW_HEIGHT / 25 });
+	buttons["Apply1"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.5, WINDOW_HEIGHT / 7.4 });
+	buttons["Apply1"].setColor(sf::Color::Black);
+	this->buttons["Apply1"].initText("Apply", "calibri.ttf", 17, sf::Color(255, 255, 255));
+	buttons["Apply1"].setOutlineThickness(2.f);
+	buttons["Apply1"].setOutlineColor(sf::Color::White);
 
+	this->shapes["Bound1"];
+	shapes["Bound1"].setSize({ WINDOW_WIDTH - WORLD_WIDTH, 2 });
+	shapes["Bound1"].setPosition({ 0, WINDOW_HEIGHT / 2.7 });
+	shapes["Bound1"].setFillColor(sf::Color::Yellow);
+
+	labels["CountBot"];
+	font->loadFromFile("calibri.ttf");
+	labels["CountBot"].setFont(*font);
+	labels["CountBot"].setString("Count bots: ");
+	labels["CountBot"].setFillColor(sf::Color::White);
+	labels["CountBot"].setCharacterSize(17);
+	labels["CountBot"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 2.5 });
 }
 
 void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -126,6 +231,11 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	}
 
 	for (auto el : textField) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : shapes) {
 
 		target.draw(el.second, states);
 	}
@@ -202,9 +312,9 @@ GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 		//cout << "Зашли в обработку кнопок\n";
 		this->textField["FileName"].setFocus(false);
+		this->textField["SimulateSpeed"].setFocus(false);
 
 		if (this->buttons["New"].isMouseOver(window)) {
-
 			World* w = new World(this->world->get_settings());
 			GameModel* a = new WorldModel(w);
 			return a;
@@ -212,33 +322,39 @@ GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 		if (this->buttons["Save"].isMouseOver(window)) {
 
-			World* w = new World();
-			std::string file_name = "write.txt";
-			std::ifstream fcin;
-			fcin.open(file_name);
-			w->load(fcin);
-			GameModel* a = new WorldModel(w);
-			return a;
+			std::ofstream fcin;
+			fcin.open(fileName);
+			world->save(fcin);
 		}
-
+		
 		if (this->textField["FileName"].isMouseOver(window)) {
-			cout << "Зашли";
 			this->textField["FileName"].setFocus(true);
 		}
 
-		else {
-			this->textField["FileName"].handleInput(event);
+		if (this->textField["SimulateSpeed"].isMouseOver(window)) {
+			this->textField["SimulateSpeed"].setFocus(true);
+		}
+
+		if (this->buttons["Apply1"].isMouseOver(window)) {
+			fileName = this->textField["FileName"].getText();
 		}
 	}
 
-	return this;
+	else if (textField["FileName"].getFocus()) {
+		this->textField["FileName"].handleInput(event);
+    }
+	
+	else if (textField["SimulateSpeed"].getFocus()) {
+		this->textField["SimulateSpeed"].handleInput(event);
+	}
 
+	return this;
 }
+
 GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 	
 	if (event.type == sf::Event::MouseButtonPressed) {
 
-		cout << "Зашли в обработку кнопок\n";
 		if (this->buttons["Run"].isMouseOver(window)) {
 
 			World* w = new World(this->settings);

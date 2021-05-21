@@ -59,6 +59,7 @@ std::pair<int, int> Environment::nearest_empty_cell(int i, int j) {
 	bool flag = false;
 	int k = 0;
 	int m = matrix.size_m();
+	int n = matrix.size_n();
 
 	while (k < m) {
 
@@ -66,11 +67,11 @@ std::pair<int, int> Environment::nearest_empty_cell(int i, int j) {
 
 			for (int counter_j = 0, j_dir = j - 1; counter_j < 3 + k; ++counter_j, ++j_dir) {
 
-				if (matrix.cell_is_exist(i_dir, j_dir)) {
+				if (matrix.cell_is_exist((i_dir + m) % m, (j_dir + n) % n)) {
 
-					if (matrix(i_dir, j_dir)->is_empty()) {
+					if (matrix((i_dir + m) % m, (j_dir + n) % n)->is_empty()) {
 
-						return { i_dir, j_dir };
+						return { (i_dir + m) % m, (j_dir + n) % n };
 					}
 				}
 			}
@@ -80,6 +81,7 @@ std::pair<int, int> Environment::nearest_empty_cell(int i, int j) {
 		--i;
 		--j;
 	}
+	throw 2;
 }
 
 void Environment::generation_wall(int count) {
