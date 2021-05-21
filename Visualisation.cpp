@@ -213,7 +213,7 @@ WorldModel::WorldModel(World* w) : world(w) {
 void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 	std::chrono::system_clock::time_point start;
-	if (DEBUG) {
+	if (DEBUG_TIME) {
 		start = std::chrono::system_clock::now();
 
 	}
@@ -293,8 +293,8 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 			}
 		}
 	}
-	/*
-	if (DEBUG) {
+	
+	if (DEBUG_TIME) {
 
 
 		auto end = std::chrono::system_clock::now();
@@ -302,7 +302,7 @@ void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		std::cout << "Time for drawing world: " << elapsed.count() << " ms" << std::endl;
 
 	}
-	*/
+	
 
 }
 

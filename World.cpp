@@ -1,4 +1,5 @@
 #include "World.h"
+#include <chrono>
 
 void World::iteration_world() {
 
@@ -8,6 +9,12 @@ void World::iteration_world() {
 	int count = live_bots->size();
 	this->environment.set_count_live_bots(count);
 	int i;
+
+	std::chrono::system_clock::time_point start;
+	if (DEBUG_TIME) {
+		start = std::chrono::system_clock::now();
+
+	}
 
 	for (i = current_bot; i < count; ++i) {
 
@@ -28,7 +35,10 @@ void World::iteration_world() {
 				//cout << genome << "\n";
 			}
 
-			this->command.process_command(coordinates.first, coordinates.second);
+			int index_command = ((Bot*)environment.get_matrix()(one_dim))->get_current_gen();
+			Command* command = this->create_command(index_command);
+			coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+			command->execute(coordinates.first, coordinates.second);
 			coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
 
 			if (environment.get_access_to_bot({ coordinates.first, coordinates.second })->is_die()) {
@@ -41,6 +51,15 @@ void World::iteration_world() {
 		}
 	}
 
+
+	if (DEBUG_TIME) {
+
+
+		auto end = std::chrono::system_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		std::cout << "Time for processing world: " << elapsed.count() << " ms" << std::endl;
+
+	}
 	if (count != 0)
 	    environment.set_index_current_bot_from_live_bots(i % count);
 	/*
@@ -240,3 +259,71 @@ void World::load(std::istream& fcin) {
 }
 
 
+Command* World::create_command(int step) {
+	if (DEBUG) {
+		cout << "команда " << step << "\n";
+	}
+
+	if (step < LOOK)
+		return new LookCommand(&environment, &settings);
+
+	else {
+
+		if (step < CONVERT_TO_FOOD)
+			return new ConvertToFoodCommand(&environment, &settings);
+
+		else {
+
+			if (step < STEAL)
+				return new StealCommand(&environment, &settings);
+
+			else {
+
+				if (step < PHOTOSYNTHESIS)
+					return new PhotosynthesisCommand(&environment, &settings);
+
+				else {
+
+					if (step < MOVE)
+						return new MoveCommand(&environment, &settings);
+
+					else {
+
+						if (step < EAT)
+							return new EatCommand(&environment, &settings);
+
+						else {
+
+							if (step < COPY)
+								return new CopyCommand(&environment, &settings);
+
+							else {
+
+								if (step < SWAP_MINERALS)
+									return new SwapMineralsCommand(&environment, &settings);
+
+								else {
+
+									if (step < EAT_BOT)
+										return new EatBotCommand(&environment, &settings);
+
+									else {
+
+										if (step < CHECK_ENERGY)
+											return new CheckEnergyCommand(&environment, &settings);
+
+										else {
+
+											if (step < CYCLIC_MOVE)
+												return new CyclicMoveCommand(&environment, &settings, step);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

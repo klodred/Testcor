@@ -2,10 +2,11 @@
 #include "Entity.h"
 static const int ENVIRONMENT_HEIGHT = 80, ENVIRONMENT_WIDTH = 80;
 static const int DEBUG = 0;
+static const int DEBUG_TIME = 1;
 
 class Settings {
 	public:
-	int size_environment = 60;
+	int size_environment = 80;
 	int size_genome = 64;
 	int time_iteration = 300;
 	int count_bots;

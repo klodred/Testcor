@@ -11,17 +11,15 @@ class World {
 private:
 	Settings settings;
 	Environment environment;
-	Command command;
 	int time;
 
 public:
-	World() { settings = Settings(); environment = Environment(); command = Command(&environment, &settings); };
+	World() { settings = Settings(); environment = Environment(); };
 
 	World(Settings _settings) {
 		cout << &this->environment << "\n";
 		settings = _settings; 
 		environment = Environment(settings.get_size()); 
-		command = Command(&environment, &settings);
 
 		environment.populate(settings.get_count_bots());
 		environment.generation_health(settings.count_heal());
@@ -29,6 +27,8 @@ public:
 		environment.generation_wall(settings.count_wall());
 		time = 0;
 	}
+
+	virtual Command* create_command(int index);
 
 	void set_size(int size) { settings.set_size(size); };
 

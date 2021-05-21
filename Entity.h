@@ -69,6 +69,8 @@ public:
 
 	int get_index_step() { return index_step; };
 
+	int get_current_gen() { return genome[index_step]; };
+
 	void set_index_step(int index) { index_step = index; };
 
 	int get_energy() const { return energy; };

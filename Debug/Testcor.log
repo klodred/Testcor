@@ -1,7 +1,127 @@
-﻿  Environment.cpp
+﻿  Command.cpp
 D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
-D:\file\si\OOP\Testcor\Environment.cpp(42,20): warning C4018: <: несоответствие типов со знаком и без знака
-D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+  Settings.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Settings.cpp(80,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Visualisation.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Visualisation.h(46,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.h(57,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(58,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(161,24): warning C4018: <: несоответствие типов со знаком и без знака
+D:\file\si\OOP\Testcor\Visualisation.cpp(115,89): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(123,90): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(131,96): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(136,100): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(152,100): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(159,92): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(171,89): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(186,93): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(193,91): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(201,57): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(290,60): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.cpp(290,43): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.cpp(395,70): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(402,73): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(408,78): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+D:\file\si\OOP\Testcor\Visualisation.cpp(414,74): warning C4305: аргумент: усечение из "double" в "T"
+          with
+          [
+              T=float
+          ]
+  World.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\World.cpp(127,20): warning C4018: <: несоответствие типов со знаком и без знака
+D:\file\si\OOP\Testcor\World.cpp(136,20): warning C4018: <: несоответствие типов со знаком и без знака
+D:\file\si\OOP\Testcor\World.cpp(210,20): warning C4018: <: несоответствие типов со знаком и без знака
+  main.cpp
+D:\file\si\OOP\Testcor\Entity.h(13,41): warning C4091: static : пропускается слева от "<unnamed-enum-SUN>", когда ни одна переменная не объявлена
+D:\file\si\OOP\Testcor\Visualisation.h(46,42): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+D:\file\si\OOP\Testcor\Visualisation.h(57,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(58,16): warning C4244: инициализация: преобразование "T" в "float", возможна потеря данных
+          with
+          [
+              T=int
+          ]
+D:\file\si\OOP\Testcor\Visualisation.h(161,24): warning C4018: <: несоответствие типов со знаком и без знака
+D:\file\si\OOP\Testcor\main.cpp(6,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода...
+D:\file\si\OOP\Testcor\World.cpp(329): warning C4715: World::create_command: значение возвращается не при всех путях выполнения
 D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(116): warning C4715: Matrix<Entity *>::two_dimensional_index: значение возвращается не при всех путях выполнения
 D:\file\si\OOP\Testcor\Matrix.h(98): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(41): warning C4715: Settings::index_step: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(24): warning C4715: Settings::direction_identifier: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(58): warning C4715: Settings::lost_energy_by_step: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Settings.cpp(75): warning C4715: Settings::energy_by_photosynthesis: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(49): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Command.cpp(376): warning C4715: Command::process_direction: значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(41): warning C4715: Matrix<Entity *>::operator(): значение возвращается не при всех путях выполнения
+D:\file\si\OOP\Testcor\Matrix.h(108): warning C4715: Matrix<Entity *>::one_dimensional_index: значение возвращается не при всех путях выполнения
   Testcor.vcxproj -> D:\file\si\OOP\Testcor\Debug\Testcor.exe

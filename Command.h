@@ -2,10 +2,11 @@
 #include "Environment.h"
 #include "Settings.h"
 
+/*
 class Command {
 private:
 	Environment* environment;
-	SettingsS* settings;
+	Settings* settings;
 
 public:
 
@@ -39,3 +40,100 @@ public:
 
 	std::pair<int, int> process_direction(int i, int j, int direction);
 };
+*/
+
+class Command {
+protected:
+	Environment* environment;
+	Settings* settings;
+	std::pair<int, int> process_direction(int i, int j, int direction) const;
+
+public:
+	Command(Environment* envir, Settings* _settings) : environment(envir), settings(_settings) {};
+
+	Command() {};
+
+	virtual void execute(int i, int j) = 0;
+};
+
+class LookCommand : public Command {
+public:
+	LookCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class ConvertToFoodCommand : public Command {
+public:
+	ConvertToFoodCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class StealCommand : public Command {
+public:
+	StealCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class PhotosynthesisCommand : public Command {
+public:
+	PhotosynthesisCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class MoveCommand : public Command {
+public:
+	MoveCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class EatCommand : public Command {
+public:
+	EatCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class CopyCommand : public Command {
+public:
+	CopyCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class SwapMineralsCommand : public Command {
+public:
+	SwapMineralsCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class EatBotCommand : public Command {
+public:
+	EatBotCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class CheckEnergyCommand : public Command {
+public:
+	CheckEnergyCommand(Environment* envir, Settings* _settings) : Command(envir, _settings) {};
+
+	virtual void execute(int i, int j);
+};
+
+class CyclicMoveCommand : public Command {
+private:
+	int step;
+
+public:
+	CyclicMoveCommand(Environment* envir, Settings* _settings, int s) : Command(envir, _settings), step(s) {};
+
+	virtual void execute(int i, int j);
+};
+
+

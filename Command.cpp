@@ -4,6 +4,7 @@
 // и в конструкторе бота
 // по содержанию его генома его тип будет записываться в int type
 
+/*
 void Command::process_command(int i, int j) {
 	Matrix<Entity*>* matr = environment->get_access_to_matrix();
 	int index = ((Bot*)(*matr)(i, j))->get_index_step();
@@ -78,7 +79,33 @@ void Command::process_command(int i, int j) {
 	}
 }
 
-void Command::steal(int i, int j) {
+void Command::look(int i, int j) {
+	Matrix<Entity*> matrix = environment->get_matrix();
+	int n = matrix.size_n(), m = matrix.size_m();
+	vector<int> genome = ((Bot*)matrix(i, j))->get_genome();
+	//int direction = .value_next_cell(i, j) % 8;
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
+	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
+
+	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+
+	//if (i_dir >= n or j_dir >= m)
+		//throw std::out_of_range("Direction_Error");
+
+	if (matrix(i_dir, j_dir)->is_health()) {
+
+		((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
+		environment->set_entity({ i_dir, j_dir }, (Bot*)matrix(i, j));
+		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
+		environment->clear(i, j);
+	}
+
+	((Bot*)matrix(i, j))->enlarge_index_step(settings->index_step_by_look(matrix(i_dir, j_dir)));
+	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
+}
+*/
+void StealCommand::execute(int i, int j) {
 	int n = environment->size(), m = environment->size();
 	Matrix<Entity*> matrix = environment->get_matrix();
 	bool flag = true;
@@ -115,33 +142,7 @@ void Command::steal(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step()); 
 }
 
-void Command::look(int i, int j) {
-	Matrix<Entity*> matrix = environment->get_matrix();
-	int n = matrix.size_n(), m = matrix.size_m();
-	vector<int> genome = ((Bot*)matrix(i, j))->get_genome();
-	//int direction = .value_next_cell(i, j) % 8;
-	int index = ((Bot*)matrix(i, j))->get_index_step();
-	int direction = genome[(index + 1) % genome.size()] % 8;
-	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
-
-	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
-
-	//if (i_dir >= n or j_dir >= m)
-		//throw std::out_of_range("Direction_Error");
-
-	if (matrix(i_dir, j_dir)->is_health()) {
-
-		((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
-		environment->set_entity({ i_dir, j_dir }, (Bot*)matrix(i, j));
-		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
-		environment->clear(i, j);
-	}
-
-	((Bot*)matrix(i, j))->enlarge_index_step(settings->index_step_by_look(matrix(i_dir, j_dir)));
-	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
-}
-
-void Command::convert_to_food(int i, int j) {
+void ConvertToFoodCommand::execute(int i, int j) {
 	int n = environment->size(), m = environment->size();
 	Matrix<Entity*> matrix = environment->get_matrix();
 
@@ -154,7 +155,6 @@ void Command::convert_to_food(int i, int j) {
 				if (matrix(i_dir, j_dir)->is_poison()) {
 
 					environment->get_access_to_bot({ i, j })->enlarge_energy(abs(((Poison*)matrix(i_dir, j_dir))->get_heal()));
-					//environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_convert_to_food);
 					environment->clear(i_dir, j_dir);
 					environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_convert_to_food);
 				}
@@ -166,7 +166,7 @@ void Command::convert_to_food(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
 
-void Command::photosynthesis(int i, int j) {
+void PhotosynthesisCommand::execute(int i, int j) {
 	
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->energy_by_photosynthesis());
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_photosynthesis((environment->get_bot(i, j)).get_energy()));
@@ -174,7 +174,7 @@ void Command::photosynthesis(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
 
-void Command::move(int i, int j) {
+void MoveCommand::execute(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
@@ -206,7 +206,7 @@ void Command::move(int i, int j) {
 	((Bot*)matrix(i, j))->enlarge_index_step(settings->direction_identifier(matrix(i_dir, j_dir)));
 }
 
-void Command::eat(int i, int j) {
+void EatCommand::execute(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
@@ -237,7 +237,7 @@ void Command::eat(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->direction_identifier(matrix(i_dir, j_dir)));
 }
 
-void Command::copy(int i, int j) {
+void CopyCommand::execute(int i, int j) {
 	Bot * a = new Bot;
 	Matrix<Entity*>* matr = environment->get_access_to_matrix();
 	int size = matr->size_m() * matr->size_n();
@@ -280,7 +280,7 @@ void Command::copy(int i, int j) {
 
 // Обмен всех минералов или какого то определенного кол-ва
 // Перенести константу (константа, атрибут настроек или атрибут мира)
-void Command::swap_minerals(int i, int j) {
+void SwapMineralsCommand::execute(int i, int j) {
 	Bot* a = environment->get_access_to_bot({ i, j });
 	int minerals = a->get_minerals();
 
@@ -294,7 +294,7 @@ void Command::swap_minerals(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(settings->index_step_by_swap_minerals(minerals));
 }
 
-void Command::eat_bot(int i, int j) {
+void EatBotCommand::execute(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 	Bot* bot = environment->get_access_to_bot({ i, j });
@@ -325,7 +325,7 @@ void Command::eat_bot(int i, int j) {
 }
 
 
-void Command::check_energy(int i, int j) {
+void CheckEnergyCommand::execute(int i, int j) {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int energy = ((Bot*)matrix(i, j))->get_energy();
 
@@ -338,12 +338,12 @@ void Command::check_energy(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
 
-void Command::cyclic_move(int i, int j, int step) {
+void CyclicMoveCommand::execute(int i, int j) {
 	environment->get_access_to_bot({ i, j })->enlarge_index_step(step);
 	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
 }
 
-std::pair<int, int> Command::process_direction(int i, int j, int direction) {
+std::pair<int, int> Command::process_direction(int i, int j, int direction) const {
 	Matrix<Entity*> matrix = environment->get_matrix();
 	int n = matrix.size_n(), m = matrix.size_m();
 
@@ -374,3 +374,25 @@ std::pair<int, int> Command::process_direction(int i, int j, int direction) {
 		return { (i - 1 + m) % m, (j + 1 + n) % n };
 	}
 }
+
+void LookCommand::execute(int i, int j) {
+	Matrix<Entity*> matrix = environment->get_matrix();
+	int n = matrix.size_n(), m = matrix.size_m();
+	vector<int> genome = ((Bot*)matrix(i, j))->get_genome();
+	int index = ((Bot*)matrix(i, j))->get_index_step();
+	int direction = genome[(index + 1) % genome.size()] % 8;
+	std::pair<int, int> coordinates_direction = process_direction(i, j, direction);
+	int i_dir = coordinates_direction.first, j_dir = coordinates_direction.second;
+
+	if (matrix(i_dir, j_dir)->is_health()) {
+
+		((Bot*)matrix(i, j))->enlarge_energy(((Nutrition*)matrix(i_dir, j_dir))->get_heal());
+		environment->set_entity({ i_dir, j_dir }, (Bot*)matrix(i, j));
+		environment->set_index_in_live_bots({ i, j }, { i_dir, j_dir });
+		environment->clear(i, j);
+	}
+
+	((Bot*)matrix(i, j))->enlarge_index_step(settings->index_step_by_look(matrix(i_dir, j_dir)));
+	environment->get_access_to_bot({ i, j })->enlarge_energy(settings->lost_energy_by_step());
+}
+
