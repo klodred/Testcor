@@ -1,16 +1,15 @@
 #pragma once
 #include "Entity.h"
-
+#include "Statistics.h"
 class Environment {
 private:
 	Matrix<Entity*> matrix;
 	vector<int> live_bots;
 	vector<int> die_bots;
-	int index_current_bot_from_live_bots = 0;
-	int count_live_bots;
+	Statistics statistics;
 
 public:
-	Environment() { };
+	Environment() { statistics = Statistics(); };
 
 	Environment(int m) {
 		matrix.resize(m, m);
@@ -18,6 +17,8 @@ public:
 		for (int i = 0; i < m; ++i)
 			for (int j = 0; j < m; ++j)
 				matrix(i, j) = new EmptyEntity();
+
+		statistics = Statistics();
 	};
 
 	void populate(int count, int energy, int size_genome);
@@ -25,12 +26,6 @@ public:
 	Matrix<Entity*> get_matrix() const { return matrix; };
 
 	Bot get_bot(int i, int j) { return *((Bot*)matrix(i, j)); };
-
-	void set_count_live_bots(int count) { count_live_bots = count; };
-
-	int get_count_live_bots() const { return count_live_bots; };
-
-	//int get_size_live_bots() { return this->live_bots.size(); };
 
 	int get_count_die_bots() const { return this->die_bots.size(); };
 
@@ -53,6 +48,8 @@ public:
 	void set_entity(int pos, Entity* entity) { matrix(pos) = entity; };
 
 	Matrix<Entity*>* get_access_to_matrix() { return &matrix; };
+
+	Statistics* get_access_to_statistics() { return &statistics; };
 
 	Bot* get_access_to_bot(std::pair<int, int> coordinatis);
 
@@ -79,8 +76,4 @@ public:
 	void generation_poison(int count);
 
 	bool is_bot_die(int index) { return find(die_bots.begin(), die_bots.end(), index) != die_bots.end(); };
-
-	int get_index_current_bot_from_live_bots() const { return index_current_bot_from_live_bots; };
-
-	void set_index_current_bot_from_live_bots(int index) { index_current_bot_from_live_bots = index; };
 };

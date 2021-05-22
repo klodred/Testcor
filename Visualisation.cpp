@@ -7,7 +7,6 @@ void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
 	window.setFramerateLimit(60);
 	sf::Event event;
-	//Timer timer((MenuModel*)game.)
 	Timer timer(settings.time_iteration);
 
 	while (window.isOpen())
@@ -71,7 +70,6 @@ void Controller::run() {
 }
 
 WorldModel::WorldModel(World* w) : world(w) {
-	this->buttons["Save"];
 	buttons["Save"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 20 });
 	buttons["Save"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 20, WINDOW_HEIGHT / 20 });
 	buttons["Save"].setColor(sf::Color::Black);
@@ -79,7 +77,6 @@ WorldModel::WorldModel(World* w) : world(w) {
 	buttons["Save"].setOutlineThickness(2.f);
 	buttons["Save"].setOutlineColor(sf::Color::White);
 
-	this->buttons["New"];
 	buttons["New"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 20 });
 	buttons["New"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2, WINDOW_HEIGHT / 20 });
 	buttons["New"].setColor(sf::Color::Black);
@@ -87,7 +84,6 @@ WorldModel::WorldModel(World* w) : world(w) {
 	buttons["New"].setOutlineThickness(2.f);
 	buttons["New"].setOutlineColor(sf::Color::White);
 
-	labels["FileName"];
 	sf::Font* font = new sf::Font;
 	font->loadFromFile("calibri.ttf");
 	labels["FileName"].setFont(*font);
@@ -96,7 +92,6 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["FileName"].setCharacterSize(17);
 	labels["FileName"].setPosition({(WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 7.5});
 
-	labels["Settings"];
 	font->loadFromFile("calibri.ttf");
 	labels["Settings"].setFont(*font);
 	labels["Settings"].setString("Settings: ");
@@ -104,7 +99,6 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["Settings"].setCharacterSize(17);
 	labels["Settings"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.7, WINDOW_HEIGHT / 5 });
 
-	labels["SimulateSpeed"];
 	font->loadFromFile("calibri.ttf");
 	labels["SimulateSpeed"].setFont(*font);
 	labels["SimulateSpeed"].setString("Simulation Speed: ");
@@ -112,15 +106,14 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["SimulateSpeed"].setCharacterSize(17);
 	labels["SimulateSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 4.2 });
 
-	textField["SimulateSpeed"];
 	textField["SimulateSpeed"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 7, WINDOW_HEIGHT / 30 });
+	textField["SimulateSpeed"].setString(std::to_string(w->get_settings().time_iteration));
 	textField["SimulateSpeed"].setFillColor(sf::Color::White);
 	textField["SimulateSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.4, WINDOW_HEIGHT / 4.2 });
 	textField["SimulateSpeed"].setOutlineThickness(5);
 	textField["SimulateSpeed"].setOutlineColor(sf::Color(127, 127, 127));
 	textField["SimulateSpeed"].initText("calibri.ttf", 17, sf::Color::Black);
 
-	labels["ResourceSpeed"];
 	font->loadFromFile("calibri.ttf");
 	labels["ResourceSpeed"].setFont(*font);
 	labels["ResourceSpeed"].setString("Resource Speed: ");
@@ -128,15 +121,14 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["ResourceSpeed"].setCharacterSize(17);
 	labels["ResourceSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 3.2 });
 
-	textField["ResourceSpeed"];
 	textField["ResourceSpeed"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 7, WINDOW_HEIGHT / 30 });
+	textField["ResourceSpeed"].setString(std::to_string(w->get_settings().time_for_generation_resource));
 	textField["ResourceSpeed"].setFillColor(sf::Color::White);
 	textField["ResourceSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 2.4, WINDOW_HEIGHT / 3.2 });
 	textField["ResourceSpeed"].setOutlineThickness(5);
 	textField["ResourceSpeed"].setOutlineColor(sf::Color(127, 127, 127));
 	textField["ResourceSpeed"].initText("calibri.ttf", 17, sf::Color::Black);
 
-	this->buttons["Apply2"];
 	buttons["Apply2"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3.2, WINDOW_HEIGHT / 10 });
 	buttons["Apply2"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.55, WINDOW_HEIGHT / 4.3 });
 	buttons["Apply2"].setColor(sf::Color::Black);
@@ -144,7 +136,6 @@ WorldModel::WorldModel(World* w) : world(w) {
 	buttons["Apply2"].setOutlineThickness(2.f);
 	buttons["Apply2"].setOutlineColor(sf::Color::White);
 
-	labels["Info"];
 	font->loadFromFile("calibri.ttf");
 	labels["Info"].setFont(*font);
 	labels["Info"].setString("Info: ");
@@ -162,15 +153,15 @@ WorldModel::WorldModel(World* w) : world(w) {
 	buttons["Apply2"].setOutlineColor(sf::Color::White);
 	*/
 
-	textField["FileName"];
 	textField["FileName"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 25 });
+	textField["FileName"].setString("write.txt");
+	fileName = textField["FileName"].getText();
 	textField["FileName"].setFillColor(sf::Color::White);
 	textField["FileName"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 4, WINDOW_HEIGHT / 7.5 });
 	textField["FileName"].setOutlineThickness(5);
 	textField["FileName"].setOutlineColor(sf::Color(127, 127, 127));
 	textField["FileName"].initText("calibri.ttf", 17, sf::Color::Black);
 
-	this->buttons["Apply1"];
 	buttons["Apply1"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 6, WINDOW_HEIGHT / 25 });
 	buttons["Apply1"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.5, WINDOW_HEIGHT / 7.4 });
 	buttons["Apply1"].setColor(sf::Color::Black);
@@ -178,21 +169,120 @@ WorldModel::WorldModel(World* w) : world(w) {
 	buttons["Apply1"].setOutlineThickness(2.f);
 	buttons["Apply1"].setOutlineColor(sf::Color::White);
 
-	this->shapes["Bound1"];
 	shapes["Bound1"].setSize({ WINDOW_WIDTH - WORLD_WIDTH, 2 });
 	shapes["Bound1"].setPosition({ 0, WINDOW_HEIGHT / 2.7 });
 	shapes["Bound1"].setFillColor(sf::Color::Yellow);
 
-	labels["CountBot"];
+	shapes["Bound2"].setSize({ WINDOW_WIDTH - WORLD_WIDTH, 2 });
+	shapes["Bound2"].setPosition({ 0, WINDOW_HEIGHT / 1.55 });
+	shapes["Bound2"].setFillColor(sf::Color::Yellow);
+
 	font->loadFromFile("calibri.ttf");
 	labels["CountBot"].setFont(*font);
 	labels["CountBot"].setString("Count bots: ");
 	labels["CountBot"].setFillColor(sf::Color::White);
 	labels["CountBot"].setCharacterSize(17);
 	labels["CountBot"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 2.5 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["Resource"].setFont(*font);
+	labels["Resource"].setString("Resource: ");
+	labels["Resource"].setFillColor(sf::Color::White);
+	labels["Resource"].setCharacterSize(17);
+	labels["Resource"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.8, WINDOW_HEIGHT / 2.5 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["Time"].setFont(*font);
+	labels["Time"].setString("Time: ");
+	labels["Time"].setFillColor(sf::Color::White);
+	labels["Time"].setCharacterSize(17);
+	labels["Time"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 1.65 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["TimeDinamic"].setFont(*font);
+	labels["TimeDinamic"].setFillColor(sf::Color::White);
+	labels["TimeDinamic"].setCharacterSize(17);
+	labels["TimeDinamic"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 6.2, WINDOW_HEIGHT / 1.65 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountBotDinamic"].setFont(*font);
+	labels["CountBotDinamic"].setFillColor(sf::Color::White);
+	labels["CountBotDinamic"].setCharacterSize(17);
+	labels["CountBotDinamic"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 2.5 });
+
+	create_picture("Mixed", "mixedBot.png");
+	pictures["Mixed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 2.28 });
+
+	create_picture("Sun", "sunBot.png");
+	pictures["Sun"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 2.1 });
+
+	create_picture("Mineral", "mineralsBot.png");
+	pictures["Mineral"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 1.95 });
+
+	create_picture("Meat", "meatBot.png");
+	pictures["Meat"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 1.83 });
+
+	create_picture("Health", "health.png");
+	pictures["Health"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.7, WINDOW_HEIGHT / 2.28 });
+
+	create_picture("Poison", "poison.png");
+	pictures["Poison"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.7, WINDOW_HEIGHT / 2.1 });
+
+	create_picture("Wall", "wall.png");
+	pictures["Wall"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.7, WINDOW_HEIGHT / 1.95 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountHealth"].setFont(*font);
+	labels["CountHealth"].setFillColor(sf::Color::White);
+	labels["CountHealth"].setCharacterSize(17);
+	labels["CountHealth"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.4, WINDOW_HEIGHT / 2.28 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountPoison"].setFont(*font);
+	labels["CountPoison"].setFillColor(sf::Color::White);
+	labels["CountPoison"].setCharacterSize(17);
+	labels["CountPoison"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.4, WINDOW_HEIGHT / 2.1 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountWall"].setFont(*font);
+	labels["CountWall"].setFillColor(sf::Color::White);
+	labels["CountWall"].setCharacterSize(17);
+	labels["CountWall"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 1.4, WINDOW_HEIGHT / 1.95 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountMixed"].setFont(*font);
+	labels["CountMixed"].setFillColor(sf::Color::White);
+	labels["CountMixed"].setCharacterSize(17);
+	labels["CountMixed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 5.5, WINDOW_HEIGHT / 2.28 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountSun"].setFont(*font);
+	labels["CountSun"].setFillColor(sf::Color::White);
+	labels["CountSun"].setCharacterSize(17);
+	labels["CountSun"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 5.5, WINDOW_HEIGHT / 2.1 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountMineral"].setFont(*font);
+	labels["CountMineral"].setFillColor(sf::Color::White);
+	labels["CountMineral"].setCharacterSize(17);
+	labels["CountMineral"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 5.5, WINDOW_HEIGHT / 1.95 });
+
+	font->loadFromFile("calibri.ttf");
+	labels["CountMeat"].setFont(*font);
+	labels["CountMeat"].setFillColor(sf::Color::White);
+	labels["CountMeat"].setCharacterSize(17);
+	labels["CountMeat"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 5.5, WINDOW_HEIGHT / 1.83 });
+
+	labels["CountBotDinamic"].setString(std::to_string( world->get_count_bot()));
+	labels["CountMixed"].setString(std::to_string(world->get_count_mixed_bot()));
+	labels["CountSun"].setString(std::to_string(world->get_count_sun_bot()));
+	labels["CountMineral"].setString(std::to_string(world->get_count_minerals_bot()));
+	labels["CountMeat"].setString(std::to_string(world->get_count_meat_bot()));
+	labels["CountHealth"].setString(std::to_string(world->get_count_health()));
+	labels["CountPoison"].setString(std::to_string(world->get_count_poison()));
+	labels["CountWall"].setString(std::to_string(world->get_count_wall()));
+	labels["CountMineral"].setString(std::to_string(world->get_time()));
 }
-
-
 
 GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 
@@ -201,6 +291,7 @@ GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 		//cout << "Зашли в обработку кнопок\n";
 		this->textField["FileName"].setFocus(false);
 		this->textField["SimulateSpeed"].setFocus(false);
+		this->textField["ResourceSpeed"].setFocus(false);
 
 		if (this->buttons["New"].isMouseOver(window)) {
 			World* w = new World(this->world->get_settings());
@@ -223,8 +314,20 @@ GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 			this->textField["SimulateSpeed"].setFocus(true);
 		}
 
+		if (this->textField["ResourceSpeed"].isMouseOver(window)) {
+			this->textField["ResourceSpeed"].setFocus(true);
+		}
+
 		if (this->buttons["Apply1"].isMouseOver(window)) {
 			fileName = this->textField["FileName"].getText();
+		}
+
+		if (this->buttons["Apply2"].isMouseOver(window)) {
+			int t = std::stoi(this->textField["SimulateSpeed"].getText());
+			world->set_time_iteration(t);
+
+			t = std::stoi(this->textField["ResourceSpeed"].getText());
+			world->set_time_resource(t);
 		}
 	}
 
@@ -234,6 +337,10 @@ GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 	
 	else if (textField["SimulateSpeed"].getFocus()) {
 		this->textField["SimulateSpeed"].handleInput(event);
+	}
+
+	else if (textField["ResourceSpeed"].getFocus()) {
+		this->textField["ResourceSpeed"].handleInput(event);
 	}
 
 	return this;
@@ -280,65 +387,63 @@ MenuModel::MenuModel(Settings _set) : settings(_set) {
 
 	this->buttons["Run"];
 	buttons["Run"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
-	buttons["Run"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 4 });
+	buttons["Run"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2.7 });
 	buttons["Run"].setColor(sf::Color(255, 154, 154));
 	//this->buttons["Run"] = { { WINDOW_WIDTH / 2.5, WINDOW_HEIGHT / 10 },  sf::Color::White, {WINDOW_WIDTH / 3.5, WINDOW_HEIGHT / 7}};
 	this->buttons["Run"].initText("RUN", "calibri.ttf", 20, sf::Color(255, 255, 255));
 
 	this->buttons["Load"];
 	buttons["Load"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
-	buttons["Load"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2.7 });
+	buttons["Load"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2 });
 	buttons["Load"].setColor(sf::Color(255, 154, 154));
 	this->buttons["Load"].initText("LOAD", "calibri.ttf", 20, sf::Color(255, 255, 255));
-
+	
+	/*
 	this->buttons["Settings"];
 	buttons["Settings"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
 	buttons["Settings"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 2.05 });
 	buttons["Settings"].setColor(sf::Color(255, 154, 154));
 	this->buttons["Settings"].initText("SETTINGS", "calibri.ttf", 20, sf::Color(255, 255, 255));
+	*/
 	
 	this->buttons["Exit"];
 	buttons["Exit"].setSize({ WINDOW_WIDTH / 3, WINDOW_HEIGHT / 10 });
-	buttons["Exit"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 1.65 });
+	buttons["Exit"].setPosition({ WINDOW_WIDTH / 2.9, WINDOW_HEIGHT / 1.6 });
 	buttons["Exit"].setColor(sf::Color(255, 154, 154));
 	this->buttons["Exit"].initText("EXIT", "calibri.ttf", 20, sf::Color(255, 255, 255));
 	
 }
 
-/*
-MenuModel::MenuModel() {
-	this->buttons["Run"] = { "Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black };
-	Button button("Run", { 200, 50 }, 12, sf::Color::Green, sf::Color::Black);
-	buttons.insert(std::pair<std::string, Button>("Run", button));
-}
-*/
-
-/*
-GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
-	if (event.type == sf::Event::MouseButtonPressed) {
-
-		cout << "Зашли в обработку кнопок\n";
-		if (this->buttons["Run"].isMouseOver(window)) {
-
-			cout << "Кнопка нажата\n";
-			World* w = new World(this->settings);
-			GameModel* a = new WorldModel(w);
-			return a;
-		}
-	}
-
-	return this;
-}
-*/
-
-
 void WorldModel::run() {
 
+	int count = world->get_count_bot();
+	labels["CountBotDinamic"].setString(std::to_string(count));
+
+	count = world->get_count_mixed_bot();
+	labels["CountMixed"].setString(std::to_string(count));
+
+	count = world->get_count_sun_bot();
+	labels["CountSun"].setString(std::to_string(count));
+
+	count = world->get_count_minerals_bot();
+	labels["CountMineral"].setString(std::to_string(count));
+
+	count = world->get_count_meat_bot();
+	labels["CountMeat"].setString(std::to_string(count));
+
+	count = world->get_count_health();
+	labels["CountHealth"].setString(std::to_string(count));
+
+	count = world->get_count_poison();
+	labels["CountPoison"].setString(std::to_string(count));
+
+	count = world->get_count_wall();
+	labels["CountWall"].setString(std::to_string(count));
+
+	labels["TimeDinamic"].setString(std::to_string(world->get_time()));
+
 	this->world->iteration_world();
-
 }
-
-
 
 void GameModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
@@ -441,8 +546,12 @@ void WorldModel::draw_ui(sf::RenderTarget& target, sf::RenderStates states) cons
 		target.draw(el.second, states);
 	}
 
-};
+	for (auto el : pictures) {
 
+		target.draw(el.second, states);
+	}
+
+};
 
 void MenuModel::draw_main(sf::RenderTarget& target, sf::RenderStates states) const { 
 
@@ -466,3 +575,12 @@ void MenuModel::draw_ui(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 
 };
+
+void WorldModel::create_picture(std::string name, std::string file_name) {
+	Form form(file_name);
+	sf::Image im = form.get_sprite();
+	sf::Texture* t = new sf::Texture;
+	t->loadFromImage(im);
+	pictures[name].setTexture(*t);
+	pictures[name].setScale(0.25, 0.25);
+}

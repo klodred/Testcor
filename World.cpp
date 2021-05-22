@@ -2,13 +2,8 @@
 #include <chrono>
 
 void World::iteration_world() {
-
-	int current_bot = environment.get_index_current_bot_from_live_bots();
-	//int count = this->environment.get_count_live_bots();
 	vector<int>* live_bots = this->environment.get_accses_to_live_bots();
 	int count = live_bots->size();
-	this->environment.set_count_live_bots(count);
-	int i;
 
 	std::chrono::system_clock::time_point start;
 	if (DEBUG_TIME) {
@@ -16,7 +11,7 @@ void World::iteration_world() {
 
 	}
 
-	for (i = current_bot; i < count; ++i) {
+	for (int i = 0; i < count; ++i) {
 
 		std::pair<int, int> coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
 		int one_dim = environment.get_matrix().one_dimensional_index(coor.first, coor.second);
@@ -44,6 +39,8 @@ void World::iteration_world() {
 
 			if (environment.get_access_to_bot({ coor.first, coor.second })->is_die()) {
 				
+				environment.get_access_to_statistics()->update_bot(environment.get_bot(coor.first, coor.second));
+
 				if (DEBUG) {
 					cout << "бот умер\n";
 				}
@@ -61,15 +58,6 @@ void World::iteration_world() {
 		std::cout << "Time for processing world: " << elapsed.count() << " ms" << std::endl;
 
 	}
-	if (count != 0)
-	    environment.set_index_current_bot_from_live_bots(i % count);
-	/*
-	std::string file_name = "write.txt";
-	std::ofstream fout;
-	fout.open(file_name);
-	this->save(fout);
-	exit(0);
-	*/
 
 	sort(live_bots->begin(), live_bots->end());
 
@@ -118,21 +106,14 @@ void World::change_season() {
 
 void World::save(std::ofstream& fout) const {
 	vector<int> live_bots = environment.get_live_bots();
-	vector<int> die_bots = environment.get_die_bots();
 	Matrix<Entity*> matr = environment.get_matrix();
 	fout << settings.size_environment << "\n";
 	fout << settings.size_genome << "\n";
 	fout << settings.time_iteration << "\n\n";
 
-	fout << die_bots.size() << "\n";
-	for (int i = 0; i < die_bots.size(); ++i)
-		fout << die_bots[i] << " ";
-
-	fout << "\n";
-	fout << environment.get_count_live_bots() << "\n";
 	fout << live_bots.size() << "\n";
 	fout << time << "\n";
-	fout << environment.get_index_current_bot_from_live_bots() << "\n\n";
+	fout << "\n";
 
 	for (int i = 0; i < live_bots.size(); ++i) {
 
@@ -180,7 +161,6 @@ void World::save(std::ofstream& fout) const {
 
 void World::load(std::istream& fcin) {
 	vector<int>* live_bots = environment.get_accses_to_live_bots();
-	vector<int>* die_bots = environment.get_accses_to_die_bots();
 	fcin >> settings.size_environment;
 	environment = Environment(settings.size_environment);
 	Matrix<Entity*>* matr = environment.get_access_to_matrix();
@@ -190,23 +170,9 @@ void World::load(std::istream& fcin) {
 
 	int count;
 	fcin >> count;
-
-	die_bots->resize(count);
-
-	for (int i = 0; i < count; ++i)
-		fcin >> (*die_bots)[i];
-
-	fcin >> count;
-	environment.set_count_live_bots(count);
-
-	fcin >> count;
 	environment.get_accses_to_live_bots()->resize(count);
 
 	fcin >> this->time;
-
-	int index;
-	fcin >> index;
-	environment.set_index_current_bot_from_live_bots(index);
 
 	for (int i = 0; i < live_bots->size(); ++i) {
 
@@ -216,16 +182,14 @@ void World::load(std::istream& fcin) {
 		fcin >> energy;
 		bot->set_energy(energy);
 
-		//((Bot*)(*matr)((*live_bots)[i]))->set_energy(energy);
-
 		fcin >> energy;
 		bot->set_minerals(energy);
 
 		//((Bot*)(*matr)((*live_bots)[i]))->set_minerals(energy);
-
+		int index;
 		fcin >> index;
 		bot->set_index_step(index);
-		//((Bot*)(*matr)((*live_bots)[i]))->set_index_step(index);
+		
 
 		vector<int> genome(settings.size_genome);
 

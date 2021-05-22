@@ -5,10 +5,10 @@ static const int DEBUG = 0;
 static const int DEBUG_TIME = 1;
 
 class Settings {
-	public:
+public:
 	int size_environment = 80;
 	int size_genome = 64;
-	int time_iteration = 300;
+	int time_iteration = 1500;
 	int count_bots;
 	int start_energy;
 	enum season { SUMMER = 10, AUTUMN = SUMMER + 10, SPRING = AUTUMN + 10, WINTER = SPRING + 10 };

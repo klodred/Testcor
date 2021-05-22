@@ -86,6 +86,10 @@ private:
 public:
 	TextEdit() { maxChars = 30; _text = new sf::Text; };
 
+	void setString(std::string name) {
+		text = name;
+	}
+
 	TextEdit(sf::Vector2f _size, sf::Color bgColor, sf::Vector2f _pos, int max) : size(_size), pos(_pos), maxChars(max) {
 		shape.setFillColor(bgColor);
 		shape.setSize(size);
@@ -200,6 +204,7 @@ private:
 	std::map<std::string, sf::Text> labels;
 	std::map<std::string, TextEdit> textField;
 	std::map<std::string, sf::RectangleShape> shapes;
+	std::map<std::string, sf::Sprite> pictures;
 
 public:
 	WorldModel(World* w);
@@ -209,6 +214,8 @@ public:
 	virtual void draw_ui(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window);
+
+	void create_picture(std::string name, std::string file_name);
 
 	virtual void run();
 };

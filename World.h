@@ -19,7 +19,7 @@ public:
 	World() { settings = Settings(); environment = Environment(); };
 
 	World(Settings _settings) {
-		cout << &this->environment << "\n";
+		//cout << &this->environment << "\n";
 		settings = _settings; 
 		environment = Environment(settings.get_size()); 
 
@@ -61,6 +61,30 @@ public:
 	void save(std::ofstream& fout) const;
 
 	void load(std::istream& fcin);
+
+	//int get_count_live_bots() { return environment.get_count_live_bots() - environment.get_count_die_bots(); };
+
+	int get_count_sun_bot() { return environment.get_access_to_statistics()->count_sun_bots; };
+
+	int get_count_meat_bot() { return environment.get_access_to_statistics()->count_meat_bots; };
+
+	int get_count_minerals_bot() { return environment.get_access_to_statistics()->count_minerals_bots; };
+
+	int get_count_mixed_bot() { return environment.get_access_to_statistics()->count_mixed_bots; };
+
+	int get_count_health() { return environment.get_access_to_statistics()->count_health; };
+
+	int get_count_poison() { return environment.get_access_to_statistics()->count_poison; };
+
+	int get_count_wall() { return environment.get_access_to_statistics()->count_wall; };
+
+	int get_count_bot() { return environment.get_access_to_statistics()->count_bots; };
+
+	void set_time_iteration(int _time) { settings.time_iteration = _time; };
+
+	void set_time_resource(int _time) { settings.time_for_generation_resource = _time; };
+
+	int get_time() const { return time; };
 };
 
 

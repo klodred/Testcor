@@ -6,6 +6,7 @@ void Environment::populate(int count, int energy, int size_genome) {
 	while (c < count) {
 
 		Bot* bot = new Bot(energy, size_genome);
+		statistics.update_bot(*bot);
 		int pos = rand() % this->matrix.size();
 
 		if (this->matrix(pos)->can_be_step()) {
@@ -15,8 +16,6 @@ void Environment::populate(int count, int energy, int size_genome) {
 			this->live_bots.push_back(pos);
 		}
 	}
-
-	count_live_bots = count;
 }
 
 void Environment::kill_bot(int i, int j) {
@@ -85,6 +84,8 @@ std::pair<int, int> Environment::nearest_empty_cell(int i, int j) {
 }
 
 void Environment::generation_wall(int count) {
+	statistics.count_wall += count;
+
 	while (count > 0) {
 
 		int pos = rand() % (matrix.size_m() * matrix.size_n());
@@ -98,6 +99,8 @@ void Environment::generation_wall(int count) {
 }
 
 void Environment::generation_health(int count) {
+	statistics.count_health += count;
+
 	while (count > 0) {
 
 		int pos = rand() % (matrix.size_m() * matrix.size_n());
@@ -112,6 +115,8 @@ void Environment::generation_health(int count) {
 }
 
 void Environment::generation_poison(int count) {
+	statistics.count_poison += count;
+
 	while (count > 0) {
 
 		int pos = rand() % (matrix.size_m() * matrix.size_n());
