@@ -1,9 +1,10 @@
 #include "Entity.h"
 
-Bot::Bot() {
-	this->genome.resize(SIZE_GENOME);
-	this->rand_genome(SIZE_GENOME, 0, MAX_COMMAND);
-	this->energy = 100;
+Bot::Bot(int _energy, int _size) : energy(_energy) {
+	steapble = false;
+	eatable = true;
+	this->genome.resize(_size);
+	this->rand_genome(_size, 0, MAX_COMMAND);
 	this->index_step = 0;
 	this->type = define_the_type();
 }
@@ -28,14 +29,13 @@ int Bot::define_the_type() {
 			}
 
 		}
-
-		if (sun and minerals or sun and meat or minerals and meat)
-			return MIXED;
 	}
 
-	//int index = index_max({ sun, minerals, meat });
+	if (sun == minerals and sun == meat)
+		return MIXED;
 
-	/*
+	int index = index_max({ sun, minerals, meat });
+
 	switch (index) {
 	case 0:
 		return SUN;
@@ -46,15 +46,6 @@ int Bot::define_the_type() {
 	case 2:
 		return MEAT;
 	}
-	*/
-	if (minerals)
-		return MINERALS;
-
-	else if (meat)
-		return MEAT;
-
-	else
-		return SUN;
 }
 
 Form Bot::get_form() {
@@ -93,4 +84,72 @@ int index_max(vector<int> vec) {
 void Bot::rand_genome(int size, int left, int right) {
 	for (int i = 0; i < size; ++i)
 		genome[i] = rand() % right + left;
+}
+
+string get_command_name(int step) {
+
+	if (step < LOOK)
+		return "look";
+
+	else {
+
+		if (step < CONVERT_TO_FOOD)
+			return "convert";
+
+		else {
+
+			if (step < STEAL)
+				return "steal";
+
+			else {
+
+				if (step < PHOTOSYNTHESIS)
+					return "photosynthesis";
+
+				else {
+
+					if (step < MOVE)
+						return "move";
+
+					else {
+
+						if (step < EAT)
+							return "eat_";
+
+						else {
+
+							if (step < COPY)
+								return "copy";
+
+							else {
+
+								if (step < SWAP_MINERALS)
+									return "swap";
+
+								else {
+
+									if (step < EAT_BOT)
+										return "eat_bot";
+
+									else {
+
+										if (step < CHECK_ENERGY)
+											return "check";
+
+										else {
+
+											if (step < CYCLIC_MOVE)
+												return "cyclic";
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
 }

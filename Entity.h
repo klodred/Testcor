@@ -6,12 +6,15 @@
 #include "ImageLoader.h"
 
 enum commands {
-	LOOK = 6, CONVERT_TO_FOOD = 11, STEAL = 15, PHOTOSYNTHESIS = 19, MOVE = 25, EAT = 29, COPY = 32,
-	SWAP_MINERALS = 35, EAT_BOT = 37, CHECK_ENERGY = 40, CYCLIC_MOVE = 63
+	LOOK = 6, CONVERT_TO_FOOD = 11, STEAL = 15, PHOTOSYNTHESIS = 19, MOVE = 25, EAT = 29, COPY = 35,
+	SWAP_MINERALS = 37, EAT_BOT = 50, CHECK_ENERGY = 61, CYCLIC_MOVE = 63
 };
 
+
+string get_command_name(int step);
+
 static enum {SUN, MINERALS, MEAT, MIXED};
-static const int SIZE_GENOME = 64, MAX_COMMAND = 63;
+static const int MAX_COMMAND = 63;
 
 class Form {
 	sf::Image s;
@@ -61,7 +64,9 @@ private:
 	int type;
 
 public:
-	Bot();
+	Bot() { steapble = false; eatable = true; index_step = 0; };
+
+	Bot(int _energy, int _size); 
 
 	Bot(int step, const vector<int>& gen, int ener) : index_step(step), genome(gen), energy(ener) { steapble = false; eatable = true; }; // ?
 
@@ -69,7 +74,9 @@ public:
 
 	int get_index_step() { return index_step; };
 
-	int get_current_gen() { return genome[index_step]; };
+	int get_current_gen() { 
+		return genome[index_step]; 
+	};
 
 	void set_index_step(int index) { index_step = index; };
 
@@ -79,7 +86,9 @@ public:
 
 	vector<int> get_genome() const { return genome; };
 
-	void set_genome(vector<int> _genome) { genome = _genome; };
+	void set_genome(vector<int> _genome) { 
+		genome = _genome; 
+	};
 
 	virtual bool is_bot() const { return true; };
 
@@ -109,6 +118,8 @@ public:
 	int define_the_type();
 
 	void set_type(int _type) { this->type = _type; };
+
+	int get_type() const { return type; };
 
 	void rand_genome(int size, int left, int right);
 };

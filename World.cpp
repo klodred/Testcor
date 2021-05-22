@@ -18,35 +18,36 @@ void World::iteration_world() {
 
 	for (i = current_bot; i < count; ++i) {
 
-		std::pair<int, int> coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
-		int one_dim = environment.get_matrix().one_dimensional_index(coordinates.first, coordinates.second);
+		std::pair<int, int> coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+		int one_dim = environment.get_matrix().one_dimensional_index(coor.first, coor.second);
 
-		if ((environment.get_matrix()(one_dim)->is_bot()) && (!environment.get_access_to_bot({ coordinates.first, coordinates.second })->is_die())) {
+		if ((environment.get_matrix()(one_dim)->is_bot()) && (!environment.get_access_to_bot({ coor.first, coor.second })->is_die())) {
 
 			if (DEBUG) {
 				if (environment.get_matrix()(one_dim)->is_bot())
 					cout << "это бот\n";
 				else
 					cout << "это не бот\n";
-				cout << "»ндексы бота \n" << "одномерный : " << one_dim << "\nдвумерный " << coordinates.first << ", " << coordinates.second << "\n";
+				cout << "»ндексы бота \n" << "одномерный : " << one_dim << "\nдвумерный " << coor.first << ", " << coor.second << "\n";
 				cout << "√еном\n";
 				cout << "Ёнерги€ " << ((Bot*)environment.get_matrix()(one_dim))->get_energy() << "\n";
-				vector<int> genome = environment.get_access_to_bot(coordinates)->get_genome();
+				vector<int> genome = environment.get_access_to_bot(coor)->get_genome();
 				//cout << genome << "\n";
 			}
 
 			int index_command = ((Bot*)environment.get_matrix()(one_dim))->get_current_gen();
-			Command* command = this->create_command(index_command);
-			coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
-			command->execute(coordinates.first, coordinates.second);
-			coordinates = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+			Command* command = command_map[get_command_name(index_command)];
+			coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+			environment.get_access_to_bot({ coor.first, coor.second })->enlarge_minerals(settings.count_minerals(coor.first));
+			command->execute(coor.first, coor.second);
+			coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
 
-			if (environment.get_access_to_bot({ coordinates.first, coordinates.second })->is_die()) {
+			if (environment.get_access_to_bot({ coor.first, coor.second })->is_die()) {
 				
 				if (DEBUG) {
 					cout << "бот умер\n";
 				}
-				environment.kill_bot(coordinates.first, coordinates.second);
+				environment.kill_bot(coor.first, coor.second);
 			}
 		}
 	}

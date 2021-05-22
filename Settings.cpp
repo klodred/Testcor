@@ -50,10 +50,10 @@ int Settings::lost_energy_by_step() {
 		return -2;
 
 	case WINTER:
-		return -3;
+		return -8;
 
 	case SPRING:
-		return -1;
+		return -2;
 	}
 }
 
@@ -67,7 +67,7 @@ int Settings::energy_by_photosynthesis() {
 		return 2;
 
 	case WINTER:
-		return 1;
+		return 0;
 
 	case SPRING:
 		return 3;
@@ -88,4 +88,25 @@ int Settings::requariable_count_minerals_for_swap(vector<int> live_bots, Matrix<
 
 	sum_minerals /= count;
 	return sum_minerals;
+}
+
+int Settings::count_minerals(int deep) {
+
+	if (deep > size_environment - 7)
+		return 4;
+
+	else {
+
+		if (deep > size_environment - 16)
+			return 3;
+
+		else {
+
+			if (deep > size_environment - 30)
+				return 1;
+
+			else
+				return 0;
+		}
+	}
 }

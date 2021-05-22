@@ -20,7 +20,7 @@ public:
 				matrix(i, j) = new EmptyEntity();
 	};
 
-	void populate(int count);
+	void populate(int count, int energy, int size_genome);
 
 	Matrix<Entity*> get_matrix() const { return matrix; };
 

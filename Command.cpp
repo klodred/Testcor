@@ -242,19 +242,23 @@ void CopyCommand::execute(int i, int j) {
 	Matrix<Entity*>* matr = environment->get_access_to_matrix();
 	int size = matr->size_m() * matr->size_n();
 	double chance_mutation = (rand() % 100) / (double)100;
+	vector<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
 
-	if (chance_mutation <= settings->chance_mutation) {
+	for (int i = 0; i < genome.size(); ++i) {
 
-		int position_in_genome = rand() % a->get_genome().size();
-		int command = rand() % MAX_COMMAND;
-		vector<int> genome = ((Bot*)((*matr)(i, j)))->get_genome();
-		genome[position_in_genome] = command;
-		a->set_genome(genome);
-		a->set_type(a->define_the_type());
+		double chance_mutation = (rand() % 100) / (double)100;
+
+		if (chance_mutation <= settings->chance_mutation) {
+
+			int command = rand() % MAX_COMMAND;
+			genome[i] = command;
+		}
 	}
-	
+
+	a->set_genome(genome);
+	a->set_type(a->define_the_type());
 	int energy = settings->energy_by_copy(((Bot*)((*matr)(i, j)))->get_energy());
-	a->enlarge_energy(energy);
+	a->set_energy(energy + settings->start_energy / 4);
 	((Bot*)((*matr)(i, j)))->enlarge_energy(-energy);
 
 	int minerals = settings->minerals_by_copy(((Bot*)((*matr)(i, j)))->get_minerals());

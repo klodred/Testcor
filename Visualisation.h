@@ -175,8 +175,12 @@ public:
 class GameModel : public sf::Drawable, public sf::Transformable {
 
 public:
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
+	virtual void draw_main(sf::RenderTarget& target, sf::RenderStates states) const { };
+	virtual void draw_ui(sf::RenderTarget& target, sf::RenderStates states) const { };
 
+	
+	
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window) = 0;
 
 	virtual void run() {};
@@ -200,7 +204,9 @@ private:
 public:
 	WorldModel(World* w);
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	//virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw_main(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw_ui(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window);
 
@@ -214,7 +220,9 @@ class MenuModel : public GameModel {
 public:
 	MenuModel(Settings _set);
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	//virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw_main(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw_ui(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window);
 };

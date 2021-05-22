@@ -1,11 +1,11 @@
 #include "Environment.h"
 
-void Environment::populate(int count) {
+void Environment::populate(int count, int energy, int size_genome) {
 	int c = 0;
 
 	while (c < count) {
 
-		Bot* bot = new Bot;
+		Bot* bot = new Bot(energy, size_genome);
 		int pos = rand() % this->matrix.size();
 
 		if (this->matrix(pos)->can_be_step()) {

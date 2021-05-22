@@ -23,7 +23,7 @@ class Settings {
 	int index_step_by_steal = 2, index_step_by_convert_to_food = 4;
 	int index_step_greater_than_bias = 4, index_step_lower_than_bias = 2, index_step_by_copy = 5;
 
-	double chance_mutation = 0.25;
+	double chance_mutation = 0.3;
 
 	int time_for_generation_resource = 100;
 
@@ -31,7 +31,7 @@ class Settings {
 
 	int current_season = SUMMER;
 
-	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 10; };
+	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 13; };
 
 	Settings(int size, int count) : size_environment(size), count_bots(count) {};
 
@@ -51,7 +51,7 @@ class Settings {
 
 	int energy_by_photosynthesis();
 
-	int energy_by_copy(int energy) { return energy / 4; };
+	int energy_by_copy(int energy) { return energy / 6; };
 
 	int minerals_by_copy(int energy) { return energy / 4; };
 
@@ -80,5 +80,7 @@ class Settings {
 	int count_heal() { return rand() % (size_environment / 40 * size_environment); };
 
 	int index_step_by_photosynthesis(int energy) { return energy % 10; };
+
+	int count_minerals(int deep);
 
 };

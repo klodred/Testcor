@@ -44,9 +44,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Environment.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
@@ -63,6 +60,9 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="Visualisation.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Environment.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>

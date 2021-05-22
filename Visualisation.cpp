@@ -70,24 +70,6 @@ void Controller::run() {
 	}
 }
 
-void MenuModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	states.transform *= getTransform();
-	sf::Sprite s;
-	sf::Image im = ImageLoader::get_instance().get_image("menu.jpg");
-	sf::Texture t;
-	t.loadFromImage(im);
-	s.setTexture(t);
-	s.setPosition(0, 0);
-	s.setScale(WINDOW_WIDTH / s.getLocalBounds().width, WINDOW_HEIGHT / s.getLocalBounds().height);
-	target.draw(s, states);
-	
-	for (auto el : buttons) {
-
-		target.draw(el.second, states);
-
-	}
-}
-
 WorldModel::WorldModel(World* w) : world(w) {
 	this->buttons["Save"];
 	buttons["Save"].setSize({ (WINDOW_WIDTH - WORLD_WIDTH) / 3, WINDOW_HEIGHT / 20 });
@@ -210,101 +192,7 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["CountBot"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 2.5 });
 }
 
-void WorldModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
-	std::chrono::system_clock::time_point start;
-	if (DEBUG_TIME) {
-		start = std::chrono::system_clock::now();
-
-	}
-
-	states.transform *= getTransform();
-
-	for (auto el : buttons) {
-
-		target.draw(el.second, states);
-	}
-
-	for (auto el : labels) {
-
-		target.draw(el.second, states);
-	}
-
-	for (auto el : textField) {
-
-		target.draw(el.second, states);
-	}
-
-	for (auto el : shapes) {
-
-		target.draw(el.second, states);
-	}
-
-	Matrix<Entity*> a = world->get_matrix();
-	int size = WORLD_WIDTH / this->world->size();
-	sf::Sprite s;
-	Form form;
-
-	Settings settings = world->get_settings();
-	int season = settings.current_season;
-	string name;
-
-	switch (season) {
-	case settings.SUMMER:
-		name = "summer.jpg";
-		break;
-
-	case settings.AUTUMN:
-		name = "autumn.jpg";
-		break;
-
-	case settings.SPRING:
-		name = "spring.jpg";
-		break;
-
-	case settings.WINTER:
-		name = "winter.jpg";
-	}
-
-	sf::Image im = ImageLoader::get_instance().get_image(name);
-	sf::Texture t;
-	t.loadFromImage(im);
-	s.setTexture(t);
-	s.setPosition(WINDOW_WIDTH - WORLD_WIDTH, 0);
-
-	s.setScale(WORLD_WIDTH / s.getLocalBounds().width, WORLD_HEIGHT / s.getLocalBounds().height);
-	target.draw(s, states);
-
-	// Отрисовка поля всего
-	for (int i = 0; i < this->world->size(); ++i) {
-
-		for (int j = 0; j < this->world->size(); ++j) {
-
-			if (!a(i, j)->is_empty()) {
-
-				form = a(i, j)->get_form();
-				sf::Image im = form.get_sprite();
-				sf::Texture t;
-				t.loadFromImage(im);
-				s.setTexture(t);
-				s.setPosition(i * size + WINDOW_WIDTH - WORLD_WIDTH, j * size);
-				s.setScale(size / s.getLocalBounds().width, size / s.getLocalBounds().height);
-				target.draw(s, states);
-			}
-		}
-	}
-	
-	if (DEBUG_TIME) {
-
-
-		auto end = std::chrono::system_clock::now();
-		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-		std::cout << "Time for drawing world: " << elapsed.count() << " ms" << std::endl;
-
-	}
-	
-
-}
 
 GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 
@@ -449,3 +337,132 @@ void WorldModel::run() {
 	this->world->iteration_world();
 
 }
+
+
+
+void GameModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+
+	std::chrono::system_clock::time_point start;
+	if (DEBUG_TIME) {
+		start = std::chrono::system_clock::now();
+
+	}
+	states.transform *= getTransform();
+	draw_main(target, states);
+	draw_ui(target, states);
+	if (DEBUG_TIME) {
+
+
+		auto end = std::chrono::system_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		std::cout << "Time for drawing world: " << elapsed.count() << " ms" << std::endl;
+
+	}
+
+}
+
+void WorldModel::draw_main(sf::RenderTarget& target, sf::RenderStates states) const {
+
+	Matrix<Entity*> a = world->get_matrix();
+	int size = WORLD_WIDTH / this->world->size();
+	sf::Sprite s;
+	Form form;
+
+	Settings settings = world->get_settings();
+	int season = settings.current_season;
+	string name;
+
+	switch (season) {
+	case settings.SUMMER:
+		name = "summer.jpg";
+		break;
+
+	case settings.AUTUMN:
+		name = "autumn.jpg";
+		break;
+
+	case settings.SPRING:
+		name = "spring.jpg";
+		break;
+
+	case settings.WINTER:
+		name = "winter.jpg";
+	}
+
+	sf::Image im = ImageLoader::get_instance().get_image(name);
+	sf::Texture t;
+	t.loadFromImage(im);
+	s.setTexture(t);
+	s.setPosition(WINDOW_WIDTH - WORLD_WIDTH, 0);
+
+	s.setScale(WORLD_WIDTH / s.getLocalBounds().width, WORLD_HEIGHT / s.getLocalBounds().height);
+	target.draw(s, states);
+
+	// Отрисовка поля всего
+	for (int i = 0; i < this->world->size(); ++i) {
+
+		for (int j = 0; j < this->world->size(); ++j) {
+
+			if (!a(i, j)->is_empty()) {
+
+				form = a(i, j)->get_form();
+				sf::Image im = form.get_sprite();
+				sf::Texture t;
+				t.loadFromImage(im);
+				s.setTexture(t);
+				s.setPosition(i * size + WINDOW_WIDTH - WORLD_WIDTH, j * size);
+				s.setScale(size / s.getLocalBounds().width, size / s.getLocalBounds().height);
+				target.draw(s, states);
+			}
+		}
+	}
+
+};
+
+void WorldModel::draw_ui(sf::RenderTarget& target, sf::RenderStates states) const { 
+
+	for (auto el : buttons) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : labels) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : textField) {
+
+		target.draw(el.second, states);
+	}
+
+	for (auto el : shapes) {
+
+		target.draw(el.second, states);
+	}
+
+};
+
+
+void MenuModel::draw_main(sf::RenderTarget& target, sf::RenderStates states) const { 
+
+	sf::Sprite s;
+	sf::Image im = ImageLoader::get_instance().get_image("menu.jpg");
+	sf::Texture t;
+	t.loadFromImage(im);
+	s.setTexture(t);
+	s.setPosition(0, 0);
+	s.setScale(WINDOW_WIDTH / s.getLocalBounds().width, WINDOW_HEIGHT / s.getLocalBounds().height);
+	target.draw(s, states);
+
+};
+
+void MenuModel::draw_ui(sf::RenderTarget& target, sf::RenderStates states) const { 
+
+	for (auto el : buttons) {
+
+		target.draw(el.second, states);
+
+	}
+
+};
