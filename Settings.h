@@ -1,22 +1,22 @@
 #pragma once
 #include "Entity.h"
-static const int ENVIRONMENT_HEIGHT = 80, ENVIRONMENT_WIDTH = 80;
+static const int ENVIRONMENT_HEIGHT = 60, ENVIRONMENT_WIDTH = 60;
 static const int DEBUG = 0;
-static const int DEBUG_TIME = 1;
+static const int DEBUG_TIME = 0;
 
 class Settings {
 public:
-	int size_environment = 80;
+	int size_environment = 60;
 	int size_genome = 64;
 	int time_iteration = 1500;
 	int count_bots;
 	int start_energy;
 	enum season { SUMMER = 10, AUTUMN = SUMMER + 10, SPRING = AUTUMN + 10, WINTER = SPRING + 10 };
 
-	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -2, lost_energy_by_swap_minerals = -10;
-	int lost_energy_by_eat_bot = -5;
+	int lost_energy_by_steal = -4, lost_energy_by_convert_to_food = -5, lost_energy_by_swap_minerals = -3;
+	int lost_energy_by_eat_bot = -2;
 
-	int energy_from_mineral = 3;
+	int energy_from_mineral = 4;
 
 	int bias_const = 42;
 
@@ -31,7 +31,7 @@ public:
 
 	int current_season = SUMMER;
 
-	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 8; start_energy = 13; };
+	Settings() { size_environment = ENVIRONMENT_HEIGHT; count_bots = 50; start_energy = 65; };
 
 	Settings(int size, int count) : size_environment(size), count_bots(count) {};
 
@@ -51,7 +51,7 @@ public:
 
 	int energy_by_photosynthesis();
 
-	int energy_by_copy(int energy) { return energy / 6; };
+	int energy_by_copy(int energy) { return energy / 8; };
 
 	int minerals_by_copy(int energy) { return energy / 4; };
 

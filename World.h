@@ -56,6 +56,8 @@ public:
 
 	Settings get_settings() const { return settings; }; // ?
 
+	Settings* get_ptr_settings() { return &settings; };
+
 	void change_season();
 
 	void save(std::ofstream& fout) const;

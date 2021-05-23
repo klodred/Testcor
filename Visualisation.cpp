@@ -1,13 +1,17 @@
-#include "Visualisation.h"
+п»ї#include "Visualisation.h"
 #include <chrono>
 #include "ImageLoader.h"
 #include "Timer.h"
+
+
+const int INF = INT_MAX;
 
 void Controller::run() {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Life");
 	window.setFramerateLimit(60);
 	sf::Event event;
-	Timer timer(settings.time_iteration);
+	int current_time_iteration = settings.time_iteration;
+	Timer timer(current_time_iteration);
 
 	while (window.isOpen())
 	{
@@ -19,39 +23,25 @@ void Controller::run() {
 
 			if (event.type == sf::Event::KeyPressed)
 			{
-				// Получаем нажатую клавишу - выполняем соответствующее действие
+				// РџРѕР»СѓС‡Р°РµРј РЅР°Р¶Р°С‚СѓСЋ РєР»Р°РІРёС€Сѓ - РІС‹РїРѕР»РЅСЏРµРј СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµРµ РґРµР№СЃС‚РІРёРµ
 				if (event.key.code == sf::Keyboard::Escape) window.close();
-
-				if (event.key.code == sf::Keyboard::Right) {
-
-					settings.time_iteration = settings.time_iteration / 2;
-					timer = Timer(settings.time_iteration);
-
-				}
-
-				if (event.key.code == sf::Keyboard::Left) {
-
-					settings.time_iteration = (settings.time_iteration + 1) * 2;
-					timer = Timer(settings.time_iteration);
-
-				} 
-
-				if (event.key.code == sf::Keyboard::N) {
-
-					World* w = new World(settings);
-					game = new WorldModel(w);
-
-				}
 
 			}
 
 			game = game->process(event, window);
+			settings = game->get_settings();
+			if (current_time_iteration != settings.time_iteration) {
+
+				current_time_iteration = settings.time_iteration;
+				timer.set_time(current_time_iteration);
+
+			}
 
 		}
 
 		if (timer.is_ready()) {
 
-			game->run();
+			game = game->run();
 			timer.on();
 			//if (DEBUG) {
 
@@ -60,7 +50,7 @@ void Controller::run() {
 //			}
 
 		}
-		// Выполняем необходимые действия по отрисовке
+		// Р’С‹РїРѕР»РЅСЏРµРј РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґРµР№СЃС‚РІРёСЏ РїРѕ РѕС‚СЂРёСЃРѕРІРєРµ
 		window.clear(sf::Color(0, 0, 0, 60));
 		//window.clear();
 		window.draw(*game);
@@ -101,7 +91,7 @@ WorldModel::WorldModel(World* w) : world(w) {
 
 	font->loadFromFile("calibri.ttf");
 	labels["SimulateSpeed"].setFont(*font);
-	labels["SimulateSpeed"].setString("Simulation Speed: ");
+	labels["SimulateSpeed"].setString("Simulation Waiting: ");
 	labels["SimulateSpeed"].setFillColor(sf::Color::White);
 	labels["SimulateSpeed"].setCharacterSize(17);
 	labels["SimulateSpeed"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23, WINDOW_HEIGHT / 4.2 });
@@ -282,13 +272,59 @@ WorldModel::WorldModel(World* w) : world(w) {
 	labels["CountPoison"].setString(std::to_string(world->get_count_poison()));
 	labels["CountWall"].setString(std::to_string(world->get_count_wall()));
 	labels["CountMineral"].setString(std::to_string(world->get_time()));
+
+	font->loadFromFile("calibri.ttf");
+	labels["Hot Keys"].setFont(*font);
+	labels["Hot Keys"].setFillColor(sf::Color::White);
+	labels["Hot Keys"].setCharacterSize(17);
+	labels["Hot Keys"].setPosition({ (WINDOW_WIDTH - WORLD_WIDTH) / 23,  WINDOW_HEIGHT / 1.50 });
+	std::wstring ws = L"Hot Keys:\n\
+Esc - exit\n\
+N - start new simulation\n\
+в†’ - increase speed\n\
+в†ђ - decrease speed\n\
+P - pause\n";
+	labels["Hot Keys"].setString(ws);
+
 }
 
 GameModel* WorldModel::process(sf::Event& event, sf::RenderWindow& window) {
 
+	if (event.type == sf::Event::KeyPressed) {
+
+		Settings* s = world->get_ptr_settings();
+		if (event.key.code == sf::Keyboard::Right) {
+
+			s->time_iteration = s->time_iteration / 2;
+			textField["SimulateSpeed"].setString(std::to_string(s->time_iteration));
+
+		}
+
+		if (event.key.code == sf::Keyboard::Left) {
+
+			s->time_iteration = (s->time_iteration + 1) * 2;
+			textField["SimulateSpeed"].setString(std::to_string(s->time_iteration));
+
+		}
+
+		if (event.key.code == sf::Keyboard::P) {
+
+			s->time_iteration = INF;
+			textField["SimulateSpeed"].setString("Pause");
+
+		}
+
+		if (event.key.code == sf::Keyboard::N) {
+
+			World* w = new World(*s);
+			return new WorldModel(w);
+
+		}
+
+	}
 	if (event.type == sf::Event::MouseButtonPressed) {
 
-		//cout << "Зашли в обработку кнопок\n";
+		//cout << "Р—Р°С€Р»Рё РІ РѕР±СЂР°Р±РѕС‚РєСѓ РєРЅРѕРїРѕРє\n";
 		this->textField["FileName"].setFocus(false);
 		this->textField["SimulateSpeed"].setFocus(false);
 		this->textField["ResourceSpeed"].setFocus(false);
@@ -359,7 +395,7 @@ GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 		if (this->buttons["Load"].isMouseOver(window)) {
 
-			World* w = new World();
+			//World* w = new World(this->settings);
 			std::string file_name = "write.txt";
 			std::ifstream fcin;
 			fcin.open(file_name);
@@ -414,7 +450,7 @@ MenuModel::MenuModel(Settings _set) : settings(_set) {
 	
 }
 
-void WorldModel::run() {
+GameModel* WorldModel::run() {
 
 	int count = world->get_count_bot();
 	labels["CountBotDinamic"].setString(std::to_string(count));
@@ -442,7 +478,19 @@ void WorldModel::run() {
 
 	labels["TimeDinamic"].setString(std::to_string(world->get_time()));
 
-	this->world->iteration_world();
+	try {
+
+		this->world->iteration_world();
+		return this;
+
+	}
+	catch (...) {
+
+		World* w = new World(this->world->get_settings());
+		GameModel* a = new WorldModel(w);
+		return a;
+
+	}
 }
 
 void GameModel::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -503,7 +551,7 @@ void WorldModel::draw_main(sf::RenderTarget& target, sf::RenderStates states) co
 	s.setScale(WORLD_WIDTH / s.getLocalBounds().width, WORLD_HEIGHT / s.getLocalBounds().height);
 	target.draw(s, states);
 
-	// Отрисовка поля всего
+	// РћС‚СЂРёСЃРѕРІРєР° РїРѕР»СЏ РІСЃРµРіРѕ
 	for (int i = 0; i < this->world->size(); ++i) {
 
 		for (int j = 0; j < this->world->size(); ++j) {

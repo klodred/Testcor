@@ -3,6 +3,7 @@
 
 void World::iteration_world() {
 	vector<int>* live_bots = this->environment.get_accses_to_live_bots();
+	vector<int>* die_bots = this->environment.get_accses_to_die_bots();
 	int count = live_bots->size();
 
 	std::chrono::system_clock::time_point start;
@@ -39,7 +40,7 @@ void World::iteration_world() {
 
 			if (environment.get_access_to_bot({ coor.first, coor.second })->is_die()) {
 				
-				environment.get_access_to_statistics()->update_bot(environment.get_bot(coor.first, coor.second));
+				//environment.get_access_to_statistics()->update_bot(environment.get_bot(coor.first, coor.second));
 
 				if (DEBUG) {
 					cout << "бот умер\n";
@@ -48,7 +49,6 @@ void World::iteration_world() {
 			}
 		}
 	}
-
 
 	if (DEBUG_TIME) {
 
@@ -66,6 +66,37 @@ void World::iteration_world() {
 		this->environment.erase_die_bots();
 	}
 
+	for (int i = 0; i < live_bots->size(); ++i) {
+
+		auto coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+		if (environment.get_access_to_bot({ coor.first, coor.second })->is_die()) {
+
+			if (DEBUG) {
+				cout << "бот умер\n";
+			}
+			environment.kill_bot(coor.first, coor.second);
+
+		}
+
+	}
+
+	if (this->environment.get_count_die_bots() != 0) {
+
+		this->environment.erase_die_bots();
+	}
+
+	Statistics* s = environment.get_access_to_statistics();
+	s->count_bots = 0;
+	s->count_sun_bots = 0;
+	s->count_meat_bots = 0;
+	s->count_minerals_bots = 0;
+	s->count_mixed_bots = 0;
+	for (int i = 0; i < live_bots->size(); ++i) {
+
+		auto coor = environment.get_matrix().two_dimensional_index((*live_bots)[i]);
+		environment.get_access_to_statistics()->update_bot(environment.get_bot(coor.first, coor.second));
+
+	}
 	time++;
 
 	
@@ -77,6 +108,7 @@ void World::iteration_world() {
 	}
 
 	this->change_season();
+
 }
 
 void World::change_season() {

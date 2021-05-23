@@ -41,7 +41,14 @@ void Environment::erase_die_bots() {
 	for (int i = 0; i < die_bots.size(); ++i) {
 
         int pos_for_erase = find(live_bots.begin() + pos_for_search, live_bots.end(), die_bots[i]) - live_bots.begin();
-	    live_bots.erase(live_bots.begin() + pos_for_erase);
+		try {
+			live_bots.erase(live_bots.begin() + pos_for_erase);
+		}
+		catch (...) {
+
+			// skip
+
+		}
 		pos_for_search = pos_for_erase;
 	}
 

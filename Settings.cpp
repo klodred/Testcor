@@ -44,16 +44,16 @@ int Settings::lost_energy_by_step() {
 	switch (this->current_season) {
 
 	case SUMMER:
-		return -1;
+		return -3;
 
 	case AUTUMN:
-		return -2;
+		return -5;
 
 	case WINTER:
 		return -8;
 
 	case SPRING:
-		return -2;
+		return -5;
 	}
 }
 

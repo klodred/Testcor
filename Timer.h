@@ -7,10 +7,12 @@ private:
 
 	std::chrono::system_clock::time_point start;
 	std::chrono::milliseconds duration;
+	int dur_in_int;
 
 public:
 
-	Timer(int dur) : duration(dur) { }
+	const int INF = INT_MAX;
+	Timer(int dur) : duration(dur) { dur_in_int = dur; }
 
 	void on() {
 
@@ -18,11 +20,19 @@ public:
 
 	}
 
+	void set_time(int t) {
+
+		dur_in_int = t;
+		auto fs = std::chrono::milliseconds(t);
+		duration = fs;
+
+	}
+
 	bool is_ready() {
 
 		auto cur_time = std::chrono::system_clock::now();
 		auto elapse = std::chrono::duration_cast<std::chrono::milliseconds>(cur_time - start);
-		return elapse > duration;
+		return dur_in_int != INF ? elapse > duration : false;
 
 	}
 

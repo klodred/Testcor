@@ -23,7 +23,7 @@ void StealCommand::execute(int i, int j) {
 						
 						if (((Bot*)matrix(i_dir, j_dir))->is_die()) {
 
-							environment->get_access_to_statistics()->update_bot(environment->get_bot(i_dir, j_dir));
+							//environment->get_access_to_statistics()->update_bot(environment->get_bot(i_dir, j_dir));
 							environment->kill_bot(i_dir, j_dir);
 						}
 
@@ -171,7 +171,7 @@ void CopyCommand::execute(int i, int j) {
 	a->set_genome(genome);
 	a->set_type(a->define_the_type());
 	int energy = settings->energy_by_copy(((Bot*)((*matr)(i, j)))->get_energy());
-	a->set_energy(energy + settings->start_energy / 4);
+	a->set_energy(energy);
 	((Bot*)((*matr)(i, j)))->enlarge_energy(-energy);
 
 	int minerals = settings->minerals_by_copy(((Bot*)((*matr)(i, j)))->get_minerals());
@@ -180,7 +180,7 @@ void CopyCommand::execute(int i, int j) {
 
 	std::pair<int, int> position_in_environment = environment->nearest_empty_cell(i, j);
 	environment->set_entity(position_in_environment, a);
-	environment->get_access_to_statistics()->update_bot(*a);
+	//environment->get_access_to_statistics()->update_bot(*a);
 	//
 	int test = matr->one_dimensional_index(position_in_environment);
 	if (test < 0) {
@@ -230,7 +230,7 @@ void EatBotCommand::execute(int i, int j) {
 
 		if (((Bot*)matrix(i, j))->get_energy() > ((Bot*)matrix(i_dir, j_dir))->get_energy()) {
 
-			environment->get_access_to_statistics()->update_bot(environment->get_bot(i_dir, j_dir));
+			//environment->get_access_to_statistics()->update_bot(environment->get_bot(i_dir, j_dir));
 			((Bot*)matrix(i, j))->enlarge_energy(settings->energy_by_eat_bot(((Bot*)matrix(i_dir, j_dir))->get_energy()));
 			environment->kill_bot(i_dir, j_dir);
 			((Bot*)matrix(i, j))->enlarge_energy(settings->lost_energy_by_eat_bot);

@@ -186,8 +186,8 @@ public:
 	
 	
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window) = 0;
-
-	virtual void run() {};
+	virtual Settings get_settings() = 0;
+	virtual GameModel* run() { return this; };
 };
 
 /*
@@ -215,9 +215,10 @@ public:
 
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window);
 
+	virtual Settings get_settings() { return world->get_settings();  };
 	void create_picture(std::string name, std::string file_name);
 
-	virtual void run();
+	virtual GameModel* run();
 };
 
 class MenuModel : public GameModel {
@@ -231,6 +232,7 @@ public:
 	virtual void draw_main(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void draw_ui(sf::RenderTarget& target, sf::RenderStates states) const;
 
+	virtual Settings get_settings() { return settings; };
 	virtual GameModel* process(sf::Event& event, sf::RenderWindow& window);
 };
 

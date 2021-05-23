@@ -6,8 +6,8 @@
 #include "ImageLoader.h"
 
 enum commands {
-	LOOK = 6, CONVERT_TO_FOOD = 11, STEAL = 15, PHOTOSYNTHESIS = 19, MOVE = 25, EAT = 29, COPY = 35,
-	SWAP_MINERALS = 37, EAT_BOT = 50, CHECK_ENERGY = 61, CYCLIC_MOVE = 63
+	LOOK = 3, CONVERT_TO_FOOD = 5, STEAL = 13, PHOTOSYNTHESIS = 16, MOVE = 20, EAT = 29, COPY = 43,
+	SWAP_MINERALS = 45, EAT_BOT = 58, CHECK_ENERGY = 62, CYCLIC_MOVE = 63
 };
 
 
@@ -65,6 +65,8 @@ private:
 
 public:
 	Bot() { steapble = false; eatable = true; index_step = 0; };
+
+	Bot(int _energy) : energy(_energy) {};
 
 	Bot(int _energy, int _size); 
 
