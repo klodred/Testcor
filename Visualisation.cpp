@@ -395,7 +395,7 @@ GameModel* MenuModel::process(sf::Event& event, sf::RenderWindow& window) {
 
 		if (this->buttons["Load"].isMouseOver(window)) {
 
-			//World* w = new World(this->settings);
+			World* w = new World(this->settings);
 			std::string file_name = "write.txt";
 			std::ifstream fcin;
 			fcin.open(file_name);
